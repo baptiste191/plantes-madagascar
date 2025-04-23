@@ -1,2 +1,4 @@
-plantes.db
-node_modules
+*.db
+/photos/
+/node_modules/
+/.env

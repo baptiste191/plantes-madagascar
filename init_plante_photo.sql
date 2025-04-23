@@ -1,6 +1,0 @@
-CREATE TABLE photos (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  plante_id INTEGER NOT NULL,
-  chemin_fichier TEXT NOT NULL,
-  FOREIGN KEY (plante_id) REFERENCES plantes(id) ON DELETE CASCADE
-);
