@@ -39,7 +39,7 @@ db.serialize(() => {
     mode_preparation TEXT,
     contre_indications TEXT,
     remarques TEXT,
-    references_biblio TEXT
+    bibliographie TEXT
   )`);
   db.run(`CREATE TABLE IF NOT EXISTS photos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

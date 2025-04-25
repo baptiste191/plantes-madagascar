@@ -12,6 +12,7 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) =>
     cb(null, Date.now() + '-' + file.originalname)
 });
+
 const upload = multer({
   storage,
   fileFilter: (req, file, cb) => {
@@ -22,7 +23,21 @@ const upload = multer({
 });
 
 router.get('/', auth, ctrl.getByPlante);
-router.post('/', auth, roles('admin'), upload.single('photo'), ctrl.upload);
+
+// wrap Multer to catch errors
+router.post(
+  '/',
+  auth,
+  roles('admin'),
+  (req, res, next) => {
+    upload.single('photo')(req, res, err => {
+      if (err) return res.status(400).json({ error: err.message });
+      next();
+    });
+  },
+  ctrl.upload
+);
+
 router.delete('/:id', auth, roles('admin'), ctrl.delete);
 
 module.exports = router;

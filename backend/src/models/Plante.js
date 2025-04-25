@@ -22,7 +22,7 @@ module.exports = {
     const cols = [
       'nom_scientifique','famille','nom_vernaculaire','regions','vertus',
       'usages','parties_utilisees','mode_preparation',
-      'contre_indications','remarques','references'
+      'contre_indications','remarques','bibliographie'
     ];
     const placeholders = cols.map(() => '?').join(',');
     const vals = cols.map(c => p[c]);
@@ -40,7 +40,7 @@ module.exports = {
     const cols = [
       'nom_scientifique','famille','nom_vernaculaire','regions','vertus',
       'usages','parties_utilisees','mode_preparation',
-      'contre_indications','remarques','references_biblio'
+      'contre_indications','remarques','bibliographie'
     ];
     const assignments = cols.map(c => `${c} = ?`).join(',');
     const vals = cols.map(c => p[c]);
