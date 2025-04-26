@@ -9,12 +9,13 @@ export default function LoginForm({ onSuccess }) {
 
   const submit = async e => {
     e.preventDefault()
+    setError('')
     try {
       const { data } = await axios.post('/api/utilisateurs/login', {
         nom,
         mot_de_passe: mdp
       })
-      onSuccess(data)
+      onSuccess(data)  // token + user
     } catch {
       setError('Identifiants incorrects')
     }
