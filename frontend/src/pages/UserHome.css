@@ -1,0 +1,23 @@
+.user-home {
+    padding: 16px;
+  }
+  .user-home header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .search-bar {
+    width: 100%;
+    max-width: 480px;
+    padding: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #dcd4c4;
+    border-radius: 4px;
+  }
+  .plant-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
+    gap: 16px;
+  }
+  

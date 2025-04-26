@@ -1,0 +1,14 @@
+/* frontend/src/pages/AdminHome.css */
+.admin-home {
+    padding: 16px;
+  }
+  .admin-home h1 {
+    margin-bottom: 12px;
+    color: #3b2810;
+  }
+  .admin-home nav a {
+    margin-right: 8px;
+    color: #3b2810;
+    font-weight: 500;
+  }
+  
