@@ -1,22 +1,25 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+import NoImage       from '@/components/NoImage'
 import './PlantCard.css'
 
-export default function PlantCard({ plante }) {
+export default function PlantCard({ plant }) {
+  const url =
+    plant.photos && plant.photos.length > 0
+      ? `/photos/${plant.photos[0].filename}`
+      : null
+
   return (
-    <div className="plant-card">
-      <div className="plant-card-header">
-        <img
-          src={
-            plante.photos?.[0]?.filename
-              ? `/photos/${plante.photos[0].filename}`
-              : '/placeholder.png'
-          }
-          alt={plante.nom_vernaculaire}
-        />
+    <Link to={`/plant/${plant.id}`} className="pc-card">
+      {url ? (
+        <img src={url} alt={plant.nom_vernaculaire} className="pc-img" />
+      ) : (
+        <NoImage />
+      )}
+      <div className="pc-body">
+        <h3 className="pc-title">{plant.nom_scientifique}</h3>
+        <p className="pc-sub">{plant.nom_vernaculaire}</p>
       </div>
-      <h3>{plante.nom_scientifique}</h3>
-      <p>{plante.nom_vernaculaire}</p>
-      <small>{plante.regions}</small>
-    </div>
+    </Link>
   )
 }

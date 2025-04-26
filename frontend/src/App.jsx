@@ -1,16 +1,18 @@
+// frontend/src/App.jsx
 import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
-import Login             from './pages/Login'
-import UserHome          from './pages/UserHome'
-import AdminHome         from './pages/AdminHome'
-import AdminPlantes      from './pages/AdminPlantes'
-import AdminUtilisateurs from './pages/AdminUtilisateurs'
-import AdminDashboard    from './pages/AdminDashboard'
-import ProtectedRoute    from './components/ProtectedRoute'
+import Login       from './pages/Login.jsx'
+import UserHome    from './pages/UserHome.jsx'
+import PlantDetail from './pages/PlantDetail.jsx'
+import AdminHome   from './pages/AdminHome.jsx'
+import ProtectedRoute from './components/ProtectedRoute.jsx'
+
+console.log('App chargé, route :', window.location.pathname)
 
 export default function App() {
   return (
     <Routes>
+      <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
 
       <Route
@@ -23,6 +25,15 @@ export default function App() {
       />
 
       <Route
+        path="/plant/:id"
+        element={
+          <ProtectedRoute roles={['user','admin']}>
+            <PlantDetail />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
         path="/admin/*"
         element={
           <ProtectedRoute roles={['admin']}>
@@ -30,10 +41,7 @@ export default function App() {
           </ProtectedRoute>
         }
       >
-        <Route index               element={<Navigate to="plantes" replace />} />
-        <Route path="plantes"      element={<AdminPlantes />} />
-        <Route path="utilisateurs" element={<AdminUtilisateurs />} />
-        <Route path="dashboard"    element={<AdminDashboard />} />
+        {/* ... tes sous-routes admin ... */}
       </Route>
 
       <Route path="*" element={<Navigate to="/login" replace />} />

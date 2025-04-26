@@ -1,0 +1,12 @@
+.ni-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 140px;
+    background: #f0ede6;
+    color: #888;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 0 0.5rem;
+  }
+  

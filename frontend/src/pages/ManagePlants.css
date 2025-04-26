@@ -1,0 +1,3 @@
+.plants-table { width:100%; border-collapse:collapse; }
+.plants-table th, .plants-table td { border:1px solid #e1dccf; padding:0.5rem; }
+.plants-table th { background:#faf5eb; }

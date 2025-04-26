@@ -1,0 +1,5 @@
+.manage-main { max-width:800px; margin:2rem auto; }
+.users-table { width:100%; border-collapse:collapse; }
+.users-table th, .users-table td { border:1px solid #e1dccf; padding:0.5rem; }
+.users-table th { background:#faf5eb; }
+.users-table button { padding:0.25rem 0.5rem; cursor:pointer; }

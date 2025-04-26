@@ -1,23 +1,38 @@
 .user-home {
-    padding: 16px;
-  }
-  .user-home header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-  }
-  .search-bar {
-    width: 100%;
-    max-width: 480px;
-    padding: 8px;
-    margin-bottom: 16px;
-    border: 1px solid #dcd4c4;
-    border-radius: 4px;
-  }
-  .plant-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
-    gap: 16px;
-  }
-  
+  background: #faf5eb;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.uh-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1024px;
+  margin: 0 auto 2rem;
+}
+
+.uh-logo {
+  height: 192px;
+}
+
+.uh-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #3b2810;
+  text-align: center;
+  flex: 1;
+}
+
+.uh-user {
+  font-size: 1rem;
+  color: #3b2810;
+}
+
+.uh-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
+  gap: 1rem;
+  max-width: 1024px;
+  margin: 0 auto;
+}

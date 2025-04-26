@@ -3,6 +3,7 @@ const express = require('express');
 const cors    = require('cors');
 const dotenv  = require('dotenv');
 const path    = require('path');
+const photoRoutes = require('./routes/photoRoutes')
 
 dotenv.config();
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Static folder for photos
 app.use('/photos', express.static(path.join(__dirname, '../db/photos')));
+app.use('/api/photos', photoRoutes)
 
 // Routes
 app.use('/api/plantes',      require('./routes/planteRoutes'));
