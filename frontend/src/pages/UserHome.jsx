@@ -6,7 +6,7 @@ import PlantCard             from '@/components/PlantCard'
 import './UserHome.css'
 
 export default function UserHome() {
-  const { user } = useAuth()
+  const { user, logout } = useAuth()
   const [allPlants, setAllPlants] = useState([])
   const [plants, setPlants]       = useState([])
 
@@ -16,19 +16,15 @@ export default function UserHome() {
       api.get('/plantes'),
       api.get('/photos')
     ]).then(([{ data: plantesData }, { data: photosData }]) => {
-      // Regroupe les photos par plante_id
       const byPlant = photosData.reduce((acc, photo) => {
         acc[photo.plante_id] = acc[photo.plante_id] || []
         acc[photo.plante_id].push(photo)
         return acc
       }, {})
-
-      // Injecte la liste de photos dans chaque plante
       const enriched = plantesData.map(p => ({
         ...p,
         photos: byPlant[p.id] || []
       }))
-
       setAllPlants(enriched)
       setPlants(enriched)
     })
@@ -37,7 +33,6 @@ export default function UserHome() {
   const handleSearch = q => {
     const v = q.trim().toLowerCase()
     if (!v) return setPlants(allPlants)
-
     setPlants(
       allPlants.filter(p =>
         [
@@ -59,7 +54,12 @@ export default function UserHome() {
       <header className="uh-header">
         <img src="/logo.png" alt="MadaPlants" className="uh-logo" />
         <div className="uh-title">MadaPlants</div>
-        <div className="uh-user">{user.nom}</div>
+        <div className="uh-user">
+          <span className="uh-username">{user.nom}</span>
+          <button className="uh-logout" onClick={logout}>
+            Déconnexion
+          </button>
+        </div>
       </header>
 
       <SearchBar onSearch={handleSearch} />

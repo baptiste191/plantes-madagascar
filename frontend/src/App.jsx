@@ -14,6 +14,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/plant/:id" element={<PlantDetail />} />
 
       <Route
         path="/user"
