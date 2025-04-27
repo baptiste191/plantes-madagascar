@@ -1,0 +1,187 @@
+.agp-page {
+    background: #faf5eb;
+    min-height: calc(100vh - 120px);
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .agp-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  
+  .agp-left {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .agp-logo {
+    height: 64px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .agp-back {
+    background: transparent;
+    border: none;
+    color: #3b2810;
+    cursor: pointer;
+  }
+  
+  .agp-title {
+    flex: 1;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #3b2810;
+  }
+  
+  .agp-user {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .agp-user > span {
+    font-weight: 500;
+  }
+  .agp-user > button {
+    margin-top: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #3b2810;
+    background: transparent;
+    cursor: pointer;
+  }
+  
+  .agp-toolbar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: #fff;
+    border: 1px solid #e1dccf;
+    border-radius: 8px;
+  }
+  
+  .agp-toolbar input[type="search"] {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .agp-add {
+    padding: 0.5rem 1rem;
+    background: #8b9468;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .agp-add:hover {
+    background: #6a855d;
+  }
+  
+  .agp-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid #e1dccf;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .agp-table th,
+  .agp-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e1dccf;
+  }
+  
+  .agp-table th {
+    background: #f0e9dc;
+    font-weight: 600;
+  }
+  
+  .agp-table img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  .agp-placeholder {
+    width: 64px;
+    height: 64px;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 0.8rem;
+    border-radius: 4px;
+  }
+  
+  .agp-btn {
+    margin-right: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  
+  .agp-btn.edit {
+    background: #fff;
+    border: 1px solid #8b9468;
+    color: #3b2810;
+  }
+  
+  .agp-btn.delete {
+    background: #fff;
+    border: 1px solid #c94e4e;
+    color: #c94e4e;
+  }
+  
+  .agp-btn.edit:hover {
+    background: #f5f5f5;
+  }
+  
+  .agp-btn.delete:hover {
+    background: #fcebea;
+  }
+  
+  .agp-modal-backdrop {
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    z-index: 100;
+  }
+  .agp-modal {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 6px;
+    text-align: center;
+    max-width: 320px;
+  }
+  .agp-modal-actions {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-around;
+  }
+  .agp-modal-actions button {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+  }
+  .agp-modal-actions .delete {
+    background: #c94e4e;
+    color: #fff;
+  }
+  

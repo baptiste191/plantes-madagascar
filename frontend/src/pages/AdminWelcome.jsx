@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Database, Edit, Users, BarChart2 } from 'lucide-react'
-import './AdminHome.css'  // réutilise le même CSS que AdminHome
+import './AdminHome.css'
 
 export default function AdminWelcome() {
   return (
@@ -12,10 +12,10 @@ export default function AdminWelcome() {
         <p>Accéder à la liste complète des plantes en lecture seule</p>
       </Link>
 
-      <Link to="plantes" className="admin-card">
+      <Link to="plantes/gestion" className="admin-card">
         <div className="admin-card-icon"><Edit size={32} /></div>
         <h2>Gérer les plantes</h2>
-        <p>Ajouter, modifier ou supprimer des fiches plantes</p>
+        <p>Ajouter, modifier ou supprimer des fiches</p>
       </Link>
 
       <Link to="utilisateurs" className="admin-card">
