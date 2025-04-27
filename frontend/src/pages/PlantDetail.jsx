@@ -39,7 +39,7 @@ export default function PlantDetail() {
       <header className="pd-header">
         <div className="pd-left">
           <img src="/logo.png" alt="MadaPlants" className="pd-logo" />
-          <button className="pd-back" onClick={() => nav('/user')}>
+            <button className="pd-back" onClick={() => nav(-1)}>
             ← Retour
           </button>
         </div>

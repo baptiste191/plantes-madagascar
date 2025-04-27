@@ -1,30 +1,96 @@
-.admin-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
-    gap:1rem;
-    padding:2rem;
-  }
-  .admin-card {
-    background:#fff;
-    border:1px solid #e1dccf;
-    border-radius:8px;
-    padding:1rem;
-    text-align:center;
-    text-decoration:none;
-    color:inherit;
-    position:relative;
-  }
-  .admin-card .icon {
-    font-size:2rem;
-    margin-bottom:0.5rem;
-  }
-  .admin-card-btn {
-    position:absolute;
-    bottom:1rem;
-    right:1rem;
-    background:none;
-    border:none;
-    font-size:1.2rem;
-    cursor:pointer;
-  }
-  
+.admin-page {
+  background: #faf5eb;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1024px;
+  margin: 0 auto 2rem;
+  padding: 0 1rem;
+}
+
+.admin-logo {
+  height: 196px;
+}
+
+.admin-title {
+  flex: 1;
+  text-align: center;
+  font-size: 4.5rem;
+  font-weight: 600;
+  color: #3b2810;
+}
+
+.admin-user {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.admin-username {
+  font-size: 1rem;
+  color: #3b2810;
+}
+
+.admin-logout {
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background: transparent;
+  border: 1px solid #3b2810;
+  border-radius: 4px;
+  color: #3b2810;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.admin-logout:hover {
+  background: #3b2810;
+  color: #fff;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+.admin-card {
+  background: #fff;
+  border: 1px solid #e1dccf;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s;
+}
+
+.admin-card:hover {
+  transform: scale(1.02);
+}
+
+.admin-card-icon {
+  color: #6a855d;
+  margin-bottom: 1rem;
+}
+
+.admin-card h2 {
+  margin: 0.5rem 0;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.admin-card p {
+  font-size: 0.95rem;
+  text-align: center;
+  color: #555;
+  margin: 0;
+}

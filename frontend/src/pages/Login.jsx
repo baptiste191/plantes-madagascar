@@ -11,7 +11,7 @@ export default function Login() {
 
   const onSuccess = ({ token, user }) => {
     login({ user, token })
-    if (user.role === 'admin') navigate('/admin/plantes', { replace: true })
+    if (user.role === 'admin')  navigate('/admin',             { replace: true })
     else                  navigate('/user',        { replace: true })
   }
 

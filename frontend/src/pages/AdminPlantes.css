@@ -1,0 +1,27 @@
+.ap-page {
+  background: #faf5eb;
+  min-height: calc(100vh - 120px); /* header du layout pris en compte */
+  padding: 1rem;
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+.ap-back {
+  display: inline-block;
+  margin-bottom: 1rem;
+  background: transparent;
+  border: none;
+  color: #3b2810;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0;
+}
+.ap-back:hover {
+  text-decoration: underline;
+}
+
+.ap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
+  gap: 1rem;
+}
