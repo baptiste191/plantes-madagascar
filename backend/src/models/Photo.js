@@ -1,57 +1,72 @@
 // backend/src/models/Photo.js
-const db = require('../config/db')
+const db   = require('../config/db');
+const fs   = require('fs');
+const path = require('path');
 
-module.exports = {
-  // toutes les photos
+const Photo = {
+  // Toutes les photos
   getAll: () =>
-    new Promise((resolve, reject) => {
-      db.all('SELECT * FROM photos', (err, rows) => {
-        if (err) return reject(err)
-        resolve(rows)
-      })
+    new Promise((res, rej) => {
+      db.all('SELECT * FROM photos', (err, rows) =>
+        err ? rej(err) : res(rows)
+      );
     }),
 
-  // photos d'une plante donnée
-  getByPlante: (plante_id) =>
-    new Promise((resolve, reject) => {
+  // Par plante
+  getByPlante: plante_id =>
+    new Promise((res, rej) => {
       db.all(
         'SELECT * FROM photos WHERE plante_id = ?',
         [plante_id],
-        (err, rows) => {
-          if (err) return reject(err)
-          resolve(rows)
-        }
-      )
+        (err, rows) => err ? rej(err) : res(rows)
+      );
     }),
 
-  // création
+  // Par id (pour récupérer filename avant suppression)
+  getById: id =>
+    new Promise((res, rej) => {
+      db.get(
+        'SELECT * FROM photos WHERE id = ?',
+        [id],
+        (err, row) => err ? rej(err) : res(row)
+      );
+    }),
+
+  // Création
   create: ({ filename, plante_id }) =>
-    new Promise((resolve, reject) => {
+    new Promise((res, rej) => {
       db.run(
         'INSERT INTO photos (filename, plante_id) VALUES (?, ?)',
         [filename, plante_id],
         function(err) {
-          if (err) return reject(err)
-          resolve({ id: this.lastID })
+          if (err) return rej(err);
+          res({ id: this.lastID });
         }
-      )
+      );
     }),
 
-  // efface une photo par son ID
-  deleteById: (id) =>
-    new Promise((resolve, reject) => {
-      db.run('DELETE FROM photos WHERE id = ?', [id], function(err) {
-        if (err) return reject(err)
-        resolve({ changes: this.changes })
-      })
+  // Suppression en base
+  delete: id =>
+    new Promise((res, rej) => {
+      db.run(
+        'DELETE FROM photos WHERE id = ?',
+        [id],
+        function(err) {
+          if (err) return rej(err);
+          res({ changes: this.changes });
+        }
+      );
     }),
 
-  // efface toutes les photos d'une plante
-  deleteByPlante: (plante_id) =>
-    new Promise((resolve, reject) => {
-      db.run('DELETE FROM photos WHERE plante_id = ?', [plante_id], function(err) {
-        if (err) return reject(err)
-        resolve({ changes: this.changes })
-      })
-    }),
-}
+  // Optionnel : suppression fichier + base (si tu veux centraliser)
+  deleteWithFile: async id => {
+    const photo = await Photo.getById(id);
+    if (photo && photo.filename) {
+      const p = path.join(__dirname, '../../db/photos', photo.filename);
+      try { fs.unlinkSync(p) } catch {}
+    }
+    return Photo.delete(id);
+  }
+};
+
+module.exports = Photo;

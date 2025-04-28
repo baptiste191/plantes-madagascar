@@ -22,10 +22,9 @@ export default function ModifierPlante() {
   })
 
   const [existingPhotos, setExistingPhotos] = useState([])   // { id, filename }
-  const [toDeletePhotos, setToDeletePhotos] = useState([])   // ids à supprimer
-  const [newFiles, setNewFiles] = useState([])               // File[]
-
-  const [showConfirm, setShowConfirm] = useState(false)
+  const [toDeletePhotos, setToDeletePhotos]     = useState([])   // ids à supprimer
+  const [newFiles, setNewFiles]                 = useState([])   // File[]
+  const [showConfirm, setShowConfirm]           = useState(false)
 
   // charge plante + photos
   useEffect(() => {
@@ -61,12 +60,17 @@ export default function ModifierPlante() {
     const added = Array.from(e.target.files)
     setNewFiles(prev => {
       const all = [...prev, ...added]
-      // unique par nom, max 4
-      const uniq = all.filter((f,i,a) =>
-        a.findIndex(x=>x.name===f.name)===i
-      ).slice(0, 4)
+      // unique par nom + max 4 au total (existantes + nouvelles)
+      const maxNew = 4 - existingPhotos.length
+      const uniq = all
+        .filter((f,i,a) => a.findIndex(x=>x.name===f.name)===i)
+        .slice(0, maxNew)
+      if (added.length > maxNew) {
+        alert(`Vous pouvez ajouter au plus ${maxNew} nouvelle(s) photo(s).`)
+      }
       return uniq
     })
+    // reset input pour pouvoir re-sélectionner mêmes fichiers
     e.target.value = null
   }
 
@@ -89,21 +93,23 @@ export default function ModifierPlante() {
     try {
       // 1) update plante
       await api.put(`/plantes/${id}`, {
-        nom_scientifique: form.nom_scientifique,
-        nom_vernaculaire: form.nom_vernaculaire,
-        regions:          form.regions,
-        vertus:           form.vertus,
-        usages:           form.usages,
-        parties_utilisees:form.parties_utilisees,
-        mode_preparation: form.mode_preparation,
+        nom_scientifique:   form.nom_scientifique,
+        nom_vernaculaire:   form.nom_vernaculaire,
+        regions:            form.regions,
+        vertus:             form.vertus,
+        usages:             form.usages,
+        parties_utilisees:  form.parties_utilisees,
+        mode_preparation:   form.mode_preparation,
         contre_indications: form.contre_indications,
-        remarques:        form.remarques,
-        bibliographie:    form.references_biblio
+        remarques:          form.remarques,
+        bibliographie:      form.references_biblio
       })
+
       // 2) delete photos cochées
       for (let pid of toDeletePhotos) {
         await api.delete(`/photos/${pid}`)
       }
+
       // 3) upload new
       for (let file of newFiles) {
         const fd = new FormData()
@@ -113,6 +119,7 @@ export default function ModifierPlante() {
           headers: { 'Content-Type': 'multipart/form-data' }
         })
       }
+
       setShowConfirm(false)
       nav('/admin/plantes/gestion', { replace: true })
     } catch (err) {
@@ -143,7 +150,9 @@ export default function ModifierPlante() {
           <div key={key} className="mp-field">
             <label htmlFor={key}>{label}</label>
             <input
-              id={key} name={key} type="text"
+              id={key}
+              name={key}
+              type="text"
               value={form[key]}
               onChange={handleChange}
               required={key==='nom_scientifique'}
@@ -152,9 +161,9 @@ export default function ModifierPlante() {
         ))}
 
         <div className="mp-field">
-          <label>Photos existantes</label>
+          <label>Photos existantes (max. 4)</label>
           <div className="mp-previews">
-            {existingPhotos.map((p,i)=>(
+            {existingPhotos.map(p=>(
               <div key={p.id} className="mp-preview-wrapper">
                 <img
                   src={`/photos/${p.filename}`}
@@ -168,17 +177,20 @@ export default function ModifierPlante() {
                 >×</button>
               </div>
             ))}
-            {existingPhotos.length===0 && <div className="mp-noimg">Aucune photo</div>}
+            {existingPhotos.length===0 && (
+              <div className="mp-noimg">Aucune photo</div>
+            )}
           </div>
         </div>
 
         <div className="mp-field">
-          <label>Ajouter des photos (max 4)</label>
+          <label>Ajouter des photos (max. {4 - existingPhotos.length})</label>
           <input
             type="file"
             accept="image/png,image/jpeg"
             multiple
             onChange={handleFiles}
+            disabled={existingPhotos.length >= 4}
           />
           <div className="mp-previews">
             {newFiles.map((f,i)=>(
@@ -215,5 +227,5 @@ export default function ModifierPlante() {
         </div>
       )}
     </div>
-  )
+)
 }

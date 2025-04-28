@@ -1,6 +1,8 @@
 // backend/src/controllers/photoController.js
 const Photo = require('../models/Photo')
 const logger = require('../utils/logger')
+const fs   = require('fs')
+const path = require('path')
 
 exports.getPhotos = async (req, res) => {
   try {
@@ -32,24 +34,20 @@ exports.upload = async (req, res) => {
 
 exports.deletePhoto = async (req, res) => {
   try {
-    const id = parseInt(req.params.id, 10)
-
-    // 1) Linux/Mac : si tu veux aussi supprimer le fichier localement,
-    //    ajoute ici un unlinkSync. Sinon on se contente de la BDD :
-
-    const dbPhotos = await Photo.getByPlante(id)  // si tu stockes filename tu peux supprimer le fichier
-    dbPhotos.forEach(p => fs.unlinkSync(path.join(__dirname,'../../db/photos', p.filename)))
-
-    // 2) Supprime la ligne en base
-    const { changes } = await Photo.deleteById(id)
-
-    if (changes === 0) {
-      return res.status(404).json({ message: 'Photo non trouvée' })
+    const id = parseInt(req.params.id, 10);
+    // récupère filename
+    const photo = await Photo.getById(id);
+    if (photo && photo.filename) {
+      const filePath = path.join(__dirname, '../../db/photos', photo.filename);
+      fs.unlink(filePath, err => {
+        if (err) logger.error('Erreur suppression fichier', filePath, err);
+      });
     }
-
-    res.status(200).json({ changes })
+    // supprime en base
+    const result = await Photo.delete(id);
+    return res.status(200).json(result);
   } catch (err) {
-    logger.error(err)
-    res.status(500).json({ message: 'Erreur suppression photo' })
+    logger.error(err);
+    return res.status(500).json({ message: 'Erreur suppression photo' });
   }
-}
+};
