@@ -7,7 +7,6 @@ import './AjouterPlante.css'
 export default function AjouterPlante() {
   const nav = useNavigate()
 
-  // formulaire
   const [form, setForm]   = useState({
     nom_scientifique: '',
     nom_vernaculaire: '',
@@ -22,7 +21,6 @@ export default function AjouterPlante() {
   })
   const [files, setFiles] = useState([])
 
-  // modal confirmation visible ?
   const [showConfirm, setShowConfirm] = useState(false)
 
   const handleChange = e => {
@@ -30,27 +28,30 @@ export default function AjouterPlante() {
   }
 
   const handleFiles = e => {
-    const selected = Array.from(e.target.files).slice(0,4)
-    setFiles(selected)
+    const selected = Array.from(e.target.files)
+    setFiles(prev => {
+      const combined = [...prev, ...selected]
+      const unique   = combined.filter((f, i, arr) =>
+        arr.findIndex(x => x.name === f.name) === i
+      )
+      return unique.slice(0, 4)
+    })
+    e.target.value = null
   }
 
-  // lance la modal
+  const removeFile = idx => {
+    setFiles(prev => prev.filter((_, i) => i !== idx))
+  }
+
   const onCreateClick = e => {
     e.preventDefault()
     setShowConfirm(true)
   }
+  const onCancel = () => setShowConfirm(false)
 
-  // annule, retourne au formulaire
-  const onCancel = () => {
-    setShowConfirm(false)
-  }
-
-  // exécute la vraie création
   const onConfirm = async () => {
     try {
-      // 1) crée la plante
       const { data: { id } } = await api.post('/plantes', form)
-      // 2) upload des photos (une requête par fichier)
       for (let file of files) {
         const fd = new FormData()
         fd.append('photo', file)
@@ -59,7 +60,6 @@ export default function AjouterPlante() {
           headers: { 'Content-Type': 'multipart/form-data' }
         })
       }
-      // 3) redirige et informe
       setShowConfirm(false)
       nav('/admin/plantes/gestion', { replace: true })
     } catch (err) {
@@ -112,12 +112,20 @@ export default function AjouterPlante() {
           />
           <div className="ap-previews">
             {files.map((f,i)=>(
-              <img
-                key={i}
-                src={URL.createObjectURL(f)}
-                alt={`preview ${i}`}
-                className="ap-thumb"
-              />
+              <div key={i} className="ap-preview-wrapper">
+                <img
+                  src={URL.createObjectURL(f)}
+                  alt={`preview ${i}`}
+                  className="ap-thumb"
+                />
+                <button
+                  type="button"
+                  className="ap-remove-btn"
+                  onClick={() => removeFile(i)}
+                >
+                  ×
+                </button>
+              </div>
             ))}
           </div>
         </div>

@@ -49,42 +49,13 @@ export default function AdminGestionPlantes() {
   const confirmDelete = id => setToDelete(id)
   const cancelDelete  = () => setToDelete(null)
 
+  // 3) Suppression
   const doDelete = async () => {
-    try {
-      // 1) Supprimer toutes les photos associées
-      const plant = allPlants.find(p => p.id === toDelete)
-      if (plant.photos.length > 0) {
-        await Promise.all(
-          plant.photos.map(photo =>
-            api.delete(`/photos/${photo.id}`)
-          )
-        )
-      }
-
-      // 2) Supprimer la plante
-      await api.delete(`/plantes/${toDelete}`)
-
-      // 3) Mettre à jour les listes
-      const updatedAll = allPlants.filter(p => p.id !== toDelete)
-      setAllPlants(updatedAll)
-      // réappliquer le filtre de recherche
-      const q = search.trim().toLowerCase()
-      setPlants(
-        !q ? updatedAll
-           : updatedAll.filter(p =>
-               [p.nom_scientifique, p.nom_vernaculaire, p.regions]
-                 .join(' ')
-                 .toLowerCase()
-                 .includes(q)
-             )
-      )
-
-      setToDelete(null)
-    } catch (err) {
-      console.error(err)
-      alert("Erreur lors de la suppression")
-      setToDelete(null)
-    }
+    await api.delete(`/plantes/${toDelete}`)
+    const updated = allPlants.filter(p => p.id !== toDelete)
+    setAllPlants(updated)
+    setPlants(updated)
+    setToDelete(null)
   }
 
   return (

@@ -112,3 +112,38 @@
   background: #e0d8cc;
   color: #3b2810;
 }
+
+.ap-previews {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.ap-preview-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.ap-thumb {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.ap-remove-btn {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 14px;
+  line-height: 16px;
+  cursor: pointer;
+}
