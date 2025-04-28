@@ -1,11 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Database, Edit, Users, BarChart2 } from 'lucide-react'
-import './AdminHome.css'
+import './AdminWelcome.css'
 
 export default function AdminWelcome() {
   return (
-    <div className="admin-grid">
+    <div className="welcome-grid">
       <Link to="plantes" className="admin-card">
         <div className="admin-card-icon"><Database size={32} /></div>
         <h2>Afficher la base de données</h2>

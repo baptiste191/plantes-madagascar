@@ -1,21 +1,20 @@
 import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 
-import Login                from './pages/Login.jsx'
-import UserHome             from './pages/UserHome.jsx'
-import PlantDetail          from './pages/PlantDetail.jsx'
+import Login               from './pages/Login.jsx'
+import UserHome            from './pages/UserHome.jsx'
+import PlantDetail         from './pages/PlantDetail.jsx'
 
-import AdminHome            from './pages/AdminHome.jsx'
-import AdminWelcome         from './pages/AdminWelcome.jsx'
-import AdminPlantes         from './pages/AdminPlantes.jsx'
-import AdminGestionPlantes  from './pages/AdminGestionPlantes.jsx'
-import AdminUtilisateurs    from './pages/AdminUtilisateurs.jsx'
-import AdminDashboard       from './pages/AdminDashboard.jsx'
+import AdminHome           from './pages/AdminHome.jsx'
+import AdminWelcome        from './pages/AdminWelcome.jsx'
+import AdminPlantes        from './pages/AdminPlantes.jsx'
+import AdminGestionPlantes from './pages/AdminGestionPlantes.jsx'
+import AjouterPlante       from './pages/AjouterPlante.jsx'
+import ModifierPlante      from './pages/ModifierPlante.jsx'
+import AdminUtilisateurs   from './pages/AdminUtilisateurs.jsx'
+import AdminDashboard      from './pages/AdminDashboard.jsx'
 
-import AjouterPlante        from './pages/AjouterPlante.jsx'
-import ModifierPlante       from './pages/ModifierPlante.jsx'
-
-import ProtectedRoute       from './components/ProtectedRoute.jsx'
+import ProtectedRoute      from './components/ProtectedRoute.jsx'
 
 export default function App() {
   return (
@@ -23,46 +22,40 @@ export default function App() {
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
 
-      {/* User */}
+      {/* ====== USER ====== */}
       <Route
         path="/user"
         element={
-          <ProtectedRoute roles={['user','admin']}>
-            <UserHome/>
+          <ProtectedRoute roles={['user', 'admin']}>
+            <UserHome />
           </ProtectedRoute>
         }
       />
       <Route
         path="/plant/:id"
         element={
-          <ProtectedRoute roles={['user','admin']}>
-            <PlantDetail/>
+          <ProtectedRoute roles={['user', 'admin']}>
+            <PlantDetail />
           </ProtectedRoute>
         }
       />
 
-      {/* Admin layout + nested */}
+      {/* ====== ADMIN LAYOUT + NESTED ====== */}
       <Route
         path="/admin/*"
         element={
           <ProtectedRoute roles={['admin']}>
-            <AdminHome/>
+            <AdminHome />
           </ProtectedRoute>
         }
       >
-        {/* accueil admin */}
-        <Route index element={<AdminWelcome/>} />
-
-        {/* lecture seule */}
-        <Route path="plantes" element={<AdminPlantes/>} />
-
-        {/* gestion */}
-        <Route path="plantes/gestion" element={<AdminGestionPlantes/>} />
-        <Route path="plantes/gestion/ajouter" element={<AjouterPlante/>} />
-        <Route path="plantes/gestion/:id/modifier" element={<ModifierPlante/>} />
-
-        <Route path="utilisateurs" element={<AdminUtilisateurs/>} />
-        <Route path="dashboard" element={<AdminDashboard/>} />
+        <Route index element={<AdminWelcome />} />
+        <Route path="plantes" element={<AdminPlantes />} />
+        <Route path="plantes/gestion" element={<AdminGestionPlantes />} />
+        <Route path="plantes/gestion/ajouter" element={<AjouterPlante />} />
+        <Route path="plantes/gestion/:id/modifier" element={<ModifierPlante />} />
+        <Route path="utilisateurs" element={<AdminUtilisateurs />} />
+        <Route path="dashboard" element={<AdminDashboard />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/login" replace />} />

@@ -1,16 +1,14 @@
 .admin-page {
   background: #faf5eb;
   min-height: 100vh;
-  padding: 1rem;
 }
 
 .admin-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1024px;
-  margin: 0 auto 2rem;
-  padding: 0 1rem;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #e0d8cc;
 }
 
 .admin-logo {
@@ -18,79 +16,80 @@
 }
 
 .admin-title {
+  font-size: 3.5rem;
+  color: #3b2810;
   flex: 1;
   text-align: center;
-  font-size: 4.5rem;
-  font-weight: 600;
-  color: #3b2810;
 }
 
-.admin-user {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+.admin-user-area {
+  text-align: right;
 }
 
 .admin-username {
-  font-size: 1rem;
+  margin-right: 0.5rem;
   color: #3b2810;
+  font-weight: 500;
 }
 
 .admin-logout {
-  margin-top: 0.5rem;
-  padding: 0.25rem 0.5rem;
-  background: transparent;
+  padding: 0.5rem 1rem;
+  background: #fff;
   border: 1px solid #3b2810;
   border-radius: 4px;
   color: #3b2810;
   cursor: pointer;
-  font-size: 0.9rem;
 }
-
 .admin-logout:hover {
   background: #3b2810;
   color: #fff;
 }
 
+/* ==== CE QUI CHANGE ICI : une grille fixe à 4 colonnes ==== */
 .admin-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(4, 1fr);   /* 4 colonnes de largeur égale */
   gap: 1rem;
-  max-width: 1024px;
-  margin: 0 auto;
+  max-width: 1280px;
+  margin: 2rem auto;
+  padding: 0 1rem;
 }
 
 .admin-card {
   background: #fff;
-  border: 1px solid #e1dccf;
+  border: 1px solid #e0d8cc;
   border-radius: 8px;
-  padding: 1.5rem;
+  padding: 1rem;
   text-decoration: none;
   color: inherit;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: transform 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-
 .admin-card:hover {
-  transform: scale(1.02);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .admin-card-icon {
-  color: #6a855d;
-  margin-bottom: 1rem;
+  color: #4a7947;
+  margin-bottom: 0.5rem;
 }
 
 .admin-card h2 {
-  margin: 0.5rem 0;
   font-size: 1.25rem;
+  color: #3b2810;
+  margin-bottom: 0.25rem;
   text-align: center;
 }
 
 .admin-card p {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   text-align: center;
-  color: #555;
-  margin: 0;
+  color: #656262;
+}
+
+.admin-content {
+  padding: 2rem 1rem;
 }

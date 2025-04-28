@@ -1,87 +1,87 @@
-// frontend/src/pages/AdminGestionPlantes.jsx
+// src/pages/AdminGestionPlantes.jsx
 import React, { useState, useEffect } from 'react'
-import { useNavigate }               from 'react-router-dom'
-import api                           from '@/services/api'
+import { useNavigate, Link }         from 'react-router-dom'
+import api                           from '../services/api'
 import './AdminGestionPlantes.css'
 
 export default function AdminGestionPlantes() {
   const navigate = useNavigate()
   const [allPlants, setAllPlants] = useState([])
-  const [filter, setFilter]       = useState('')
+  const [plants, setPlants]       = useState([])
+  const [search, setSearch]       = useState('')
   const [toDelete, setToDelete]   = useState(null)
 
-  // Charge toutes les plantes + photos
   useEffect(() => {
-    Promise.all([ api.get('/plantes'), api.get('/photos') ])
-      .then(([{ data: plantes }, { data: photos }]) => {
-        const byPlant = photos.reduce((acc, ph) => {
-          acc[ph.plante_id] = acc[ph.plante_id] || []
-          acc[ph.plante_id].push(ph)
-          return acc
-        }, {})
-        const enriched = plantes
-          .map(p => ({ ...p, photos: byPlant[p.id] || [] }))
-          .sort((a, b) =>
-            a.nom_scientifique.localeCompare(b.nom_scientifique)
-          )
-        setAllPlants(enriched)
-      })
-      .catch(console.error)
+    Promise.all([
+      api.get('/plantes'),
+      api.get('/photos')
+    ]).then(([{ data: P }, { data: Ph }]) => {
+      const byPlant = Ph.reduce((acc, x) => {
+        acc[x.plante_id] = acc[x.plante_id] || []
+        acc[x.plante_id].push(x)
+        return acc
+      }, {})
+      const enriched = P.map(p => ({
+        ...p,
+        photos: byPlant[p.id] || []
+      })).sort((a,b) =>
+        a.nom_scientifique.localeCompare(b.nom_scientifique)
+      )
+      setAllPlants(enriched)
+      setPlants(enriched)
+    })
   }, [])
 
-  // Filtrage en temps réel
-  const plants = allPlants.filter(p =>
-    [p.nom_scientifique, p.nom_vernaculaire, p.regions]
-      .join(' ')
-      .toLowerCase()
-      .includes(filter.toLowerCase().trim())
-  )
+  // recherche live
+  useEffect(() => {
+    const q = search.trim().toLowerCase()
+    setPlants(
+      !q ? allPlants
+         : allPlants.filter(p =>
+             [p.nom_scientifique, p.nom_vernaculaire, p.regions]
+               .join(' ')
+               .toLowerCase()
+               .includes(q)
+           )
+    )
+  }, [search, allPlants])
 
-  // Confirme et exécute la suppression
-  const confirmDelete = () => {
-    api.delete(`/plantes/${toDelete.id}`)
-      .then(() => {
-        setAllPlants(allPlants.filter(p => p.id !== toDelete.id))
-        setToDelete(null)
-      })
-      .catch(() => {
-        alert('Erreur lors de la suppression')
-        setToDelete(null)
-      })
+  const confirmDelete = id => setToDelete(id)
+  const cancelDelete  = () => setToDelete(null)
+  const doDelete      = async () => {
+    await api.delete(`/plantes/${toDelete}`)
+    setAllPlants(allPlants.filter(p => p.id !== toDelete))
+    setToDelete(null)
   }
 
   return (
-    <div className="agp-page">
-      {/* Bouton Retour seul */}
-      <button className="agp-back" onClick={() => navigate(-1)}>
+    <div className="gp-container">
+      <button className="gp-back" onClick={() => navigate(-1)}>
         ← Retour
       </button>
 
-      {/* Titre et toolbar */}
-      <h1 className="agp-title">Gestion des plantes</h1>
-      <div className="agp-toolbar">
+      <h2 className="gp-title">Gestion des plantes</h2>
+
+      <div className="gp-actions">
+        <Link to="ajouter" className="gp-add">
+          + Ajouter une plante
+        </Link>
         <input
-          type="search"
-          placeholder="Rechercher par nom, région ou usage"
-          value={filter}
-          onChange={e => setFilter(e.target.value)}
+          type="text"
+          placeholder="Rechercher par nom, région…"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          className="gp-search"
         />
-        <button
-          className="agp-add"
-          onClick={() => navigate('/admin/plantes/ajouter')}
-        >
-          Ajouter une plante
-        </button>
       </div>
 
-      {/* Tableau des plantes */}
-      <table className="agp-table">
+      <table className="gp-table">
         <thead>
           <tr>
-            <th>Image</th>
+            <th>Photo</th>
             <th>Nom scientifique</th>
             <th>Nom vernaculaire</th>
-            <th>Région(s)</th>
+            <th>Régions</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -89,27 +89,26 @@ export default function AdminGestionPlantes() {
           {plants.map(p => (
             <tr key={p.id}>
               <td>
-                {p.photos[0]
-                  ? <img
-                      src={`/photos/${p.photos[0].filename}`}
-                      alt={p.nom_scientifique}
-                    />
-                  : <div className="agp-placeholder">Pas d’image</div>
-                }
+                {p.photos[0] ? (
+                  <img
+                    src={`/photos/${p.photos[0].filename}`}
+                    alt={p.nom_scientifique}
+                    className="gp-thumb"
+                  />
+                ) : (
+                  <div className="gp-noimg">Pas d’image disponible</div>
+                )}
               </td>
               <td>{p.nom_scientifique}</td>
-              <td>{p.nom_vernaculaire || '-'}</td>
+              <td>{p.nom_vernaculaire}</td>
               <td>{p.regions}</td>
               <td>
-                <button
-                  className="agp-btn edit"
-                  onClick={() => navigate(`/admin/plantes/${p.id}/modifier`)}
-                >
+                <Link to={`${p.id}/modifier`} className="gp-btn">
                   Modifier
-                </button>
+                </Link>
                 <button
-                  className="agp-btn delete"
-                  onClick={() => setToDelete(p)}
+                  onClick={() => confirmDelete(p.id)}
+                  className="gp-btn gp-btn-del"
                 >
                   Supprimer
                 </button>
@@ -119,16 +118,16 @@ export default function AdminGestionPlantes() {
         </tbody>
       </table>
 
-      {/* Modal de confirmation de suppression */}
-      {toDelete && (
-        <div className="agp-modal-backdrop">
-          <div className="agp-modal">
-            <p>Veux-tu vraiment supprimer</p>
-            <p><strong>{toDelete.nom_scientifique}</strong> ?</p>
-            <div className="agp-modal-actions">
-              <button onClick={() => setToDelete(null)}>Annuler</button>
-              <button className="delete" onClick={confirmDelete}>
-                Confirmer
+      {toDelete !== null && (
+        <div className="gp-modal">
+          <div className="gp-modal-content">
+            <p>Confirmez-vous la suppression de cette plante ?</p>
+            <div className="gp-modal-actions">
+              <button onClick={doDelete} className="gp-btn">
+                Oui, supprimer
+              </button>
+              <button onClick={cancelDelete} className="gp-btn">
+                Annuler
               </button>
             </div>
           </div>
