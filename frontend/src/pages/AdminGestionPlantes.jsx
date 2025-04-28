@@ -1,4 +1,3 @@
-// src/pages/AdminGestionPlantes.jsx
 import React, { useState, useEffect } from 'react'
 import { useNavigate, Link }         from 'react-router-dom'
 import api                           from '../services/api'
@@ -11,6 +10,7 @@ export default function AdminGestionPlantes() {
   const [search, setSearch]       = useState('')
   const [toDelete, setToDelete]   = useState(null)
 
+  // Chargement initial
   useEffect(() => {
     Promise.all([
       api.get('/plantes'),
@@ -32,7 +32,7 @@ export default function AdminGestionPlantes() {
     })
   }, [])
 
-  // recherche live
+  // Recherche dynamique
   useEffect(() => {
     const q = search.trim().toLowerCase()
     setPlants(
@@ -48,10 +48,43 @@ export default function AdminGestionPlantes() {
 
   const confirmDelete = id => setToDelete(id)
   const cancelDelete  = () => setToDelete(null)
-  const doDelete      = async () => {
-    await api.delete(`/plantes/${toDelete}`)
-    setAllPlants(allPlants.filter(p => p.id !== toDelete))
-    setToDelete(null)
+
+  const doDelete = async () => {
+    try {
+      // 1) Supprimer toutes les photos associées
+      const plant = allPlants.find(p => p.id === toDelete)
+      if (plant.photos.length > 0) {
+        await Promise.all(
+          plant.photos.map(photo =>
+            api.delete(`/photos/${photo.id}`)
+          )
+        )
+      }
+
+      // 2) Supprimer la plante
+      await api.delete(`/plantes/${toDelete}`)
+
+      // 3) Mettre à jour les listes
+      const updatedAll = allPlants.filter(p => p.id !== toDelete)
+      setAllPlants(updatedAll)
+      // réappliquer le filtre de recherche
+      const q = search.trim().toLowerCase()
+      setPlants(
+        !q ? updatedAll
+           : updatedAll.filter(p =>
+               [p.nom_scientifique, p.nom_vernaculaire, p.regions]
+                 .join(' ')
+                 .toLowerCase()
+                 .includes(q)
+             )
+      )
+
+      setToDelete(null)
+    } catch (err) {
+      console.error(err)
+      alert("Erreur lors de la suppression")
+      setToDelete(null)
+    }
   }
 
   return (

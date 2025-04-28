@@ -17,23 +17,39 @@ exports.getPhotos = async (req, res) => {
 
 exports.upload = async (req, res) => {
   try {
-    const { filename } = req.file
-    const plante_id = parseInt(req.body.plante_id, 10)
-    const newPhoto = await Photo.create({ filename, plante_id })
-    return res.status(201).json(newPhoto)
+    if (!req.file) {
+      return res.status(400).json({ message: 'Aucun fichier reçu.' });
+    }
+    const { filename } = req.file;
+    const plante_id    = parseInt(req.body.plante_id, 10);
+    const newPhoto     = await Photo.create({ filename, plante_id });
+    return res.status(201).json(newPhoto);
   } catch (err) {
-    logger.error(err)
-    return res.status(500).json({ message: 'Erreur upload photo' })
+    logger.error(err);
+    return res.status(500).json({ message: 'Erreur upload photo' });
   }
-}
+};
 
 exports.deletePhoto = async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10)
-    const result = await Photo.delete(id)
-    return res.status(200).json(result)
+
+    // 1) Linux/Mac : si tu veux aussi supprimer le fichier localement,
+    //    ajoute ici un unlinkSync. Sinon on se contente de la BDD :
+
+    const dbPhotos = await Photo.getByPlante(id)  // si tu stockes filename tu peux supprimer le fichier
+    dbPhotos.forEach(p => fs.unlinkSync(path.join(__dirname,'../../db/photos', p.filename)))
+
+    // 2) Supprime la ligne en base
+    const { changes } = await Photo.deleteById(id)
+
+    if (changes === 0) {
+      return res.status(404).json({ message: 'Photo non trouvée' })
+    }
+
+    res.status(200).json({ changes })
   } catch (err) {
     logger.error(err)
-    return res.status(500).json({ message: 'Erreur suppression photo' })
+    res.status(500).json({ message: 'Erreur suppression photo' })
   }
 }

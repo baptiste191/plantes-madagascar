@@ -1,23 +1,25 @@
 // backend/src/config/db.js
-const sqlite3 = require('sqlite3').verbose();
-const path    = require('path');
-const fs      = require('fs');
-require('dotenv').config();
+const path    = require('path')
+const sqlite3 = require('sqlite3').verbose()
 
-const dbPath = process.env.DB_PATH
-  || path.join(__dirname, '../../db/database.sqlite');
-// assure que le dossier existe
-const dir = path.dirname(dbPath);
-if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+// Résolution du chemin vers backend/db/database.sqlite
+const dbPath = path.resolve(__dirname, '../../db/database.sqlite')
+console.log('🔍 [config/db] using SQLite at:', dbPath)
 
-const db = new sqlite3.Database(dbPath, err => {
-  if (err) {
-    console.error('Erreur connexion BD :', err);
-    process.exit(1);
+// Ouvre en lecture-écriture ET création si absent
+const db = new sqlite3.Database(
+  dbPath,
+  sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
+  err => {
+    if (err) {
+      console.error('❌ Impossible d’ouvrir/créer la base de données:', err)
+    } else {
+      console.log(`✅ Base SQLite prête : ${dbPath}`)
+    }
   }
-});
+)
 
-// création des tables si besoin
+// Création des tables si besoin
 db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS utilisateurs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,7 +28,7 @@ db.serialize(() => {
     role TEXT CHECK(role IN ('admin','user')) NOT NULL DEFAULT 'user',
     derniere_connexion TEXT,
     nombre_connexion INTEGER DEFAULT 0
-  )`);
+  )`)
   db.run(`CREATE TABLE IF NOT EXISTS plantes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nom_scientifique TEXT NOT NULL,
@@ -40,13 +42,13 @@ db.serialize(() => {
     contre_indications TEXT,
     remarques TEXT,
     bibliographie TEXT
-  )`);
+  )`)
   db.run(`CREATE TABLE IF NOT EXISTS photos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     filename TEXT NOT NULL,
     plante_id INTEGER,
     FOREIGN KEY(plante_id) REFERENCES plantes(id) ON DELETE CASCADE
-  )`);
-});
+  )`)
+})
 
-module.exports = db;
+module.exports = db
