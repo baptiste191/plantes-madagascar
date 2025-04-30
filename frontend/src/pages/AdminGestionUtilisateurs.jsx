@@ -53,7 +53,7 @@ export default function AdminGestionUtilisateurs() {
 
   return (
     <div className="au-container">
-      <button className="au-back" onClick={() => nav(-1)}>
+      <button className="au-back" onClick={() => nav('/admin', { replace: true })}>
         ← Retour
       </button>
 
