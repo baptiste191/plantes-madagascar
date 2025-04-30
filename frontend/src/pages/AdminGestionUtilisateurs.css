@@ -1,65 +1,138 @@
 .au-container {
-  padding: 1rem;
   background: #faf5eb;
   min-height: 100vh;
+  padding: 1rem;
+  max-width: 1000px;       /* on élargit la page */
+  margin: 0 auto;
 }
+
 .au-back {
   background: none;
   border: none;
   color: #3b2810;
   font-size: 1rem;
   cursor: pointer;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
+
 .au-title {
-  font-size: 1.75rem;
+  font-size: 2rem;
+  font-weight: 600;
   color: #3b2810;
   margin-bottom: 1rem;
 }
-.au-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+
+.au-error {
+  background: #fdecea;
+  color: #611a15;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
   margin-bottom: 1rem;
 }
+
+.au-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
 .au-actions input {
   flex: 1;
   padding: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
+
 .au-add {
-  margin-left: 0.5rem;
   padding: 0.5rem 1rem;
-  background: #3b2810;
-  color: #fff;
+  background: #8d9770;
   border: none;
   border-radius: 4px;
+  color: #fff;
   cursor: pointer;
 }
+
+.au-table-wrapper {
+  overflow-x: auto;
+}
+
 .au-table {
   width: 100%;
   border-collapse: collapse;
-  background: #fff;
 }
+
 .au-table th,
 .au-table td {
   padding: 0.75rem;
-  border: 1px solid #e0dace;
+  border: 1px solid #eee;
   text-align: left;
 }
+
 .au-table th {
-  background: #f0e8d8;
+  background: #f0e9de;
+  color: #3b2810;
 }
+
+.au-actions-cell {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .au-btn {
-  margin-right: 0.5rem;
-  padding: 0.25rem 0.5rem;
-  background: #3b2810;
-  color: #fff;
-  border: none;
+  padding: 0.25rem 0.75rem;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
   border-radius: 4px;
   cursor: pointer;
 }
+
 .au-btn-del {
-  background: #aa0000;
+  background: #fdecea;
+  border-color: #f5c2c0;
+  color: #b02a37;
+}
+
+.au-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.au-modal {
+  background: #fff;
+  padding: 1.5rem 2rem;
+  border-radius: 6px;
+  text-align: center;
+  max-width: 90%;
+}
+
+.au-modal-actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1rem;
+}
+
+.au-btn-confirm,
+.au-btn-cancel {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.au-btn-confirm {
+  background: #8d9770;
+  color: #fff;
+}
+
+.au-btn-cancel {
+  background: #f0f0f0;
+  color: #333;
 }
