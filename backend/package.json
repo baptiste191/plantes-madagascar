@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-  "start": "node src/server.js",
-  "seed":  "node src/seed.js",
-  "test":  "cross-env NODE_ENV=test JWT_SECRET=uneCleSuperSecrete jest --runInBand"
- },
+    "start": "node src/server.js",
+    "seed": "node src/seed.js",
+    "test": "cross-env NODE_ENV=test JWT_SECRET=uneCleSuperSecrete jest --runInBand"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

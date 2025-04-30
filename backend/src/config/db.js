@@ -24,6 +24,7 @@ db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS utilisateurs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nom TEXT NOT NULL UNIQUE,
+    description_utilisateur TEXT,
     mot_de_passe TEXT NOT NULL,
     role TEXT CHECK(role IN ('admin','user')) NOT NULL DEFAULT 'user',
     derniere_connexion TEXT,

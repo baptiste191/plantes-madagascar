@@ -18,7 +18,7 @@ export default function AdminWelcome() {
         <p>Ajouter, modifier ou supprimer des fiches</p>
       </Link>
 
-      <Link to="utilisateurs" className="admin-card">
+      <Link to="utilisateurs/gestion" className="admin-card">
         <div className="admin-card-icon"><Users size={32} /></div>
         <h2>Gérer les utilisateurs</h2>
         <p>Créer, modifier ou supprimer des comptes d’utilisateurs</p>
