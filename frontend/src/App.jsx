@@ -11,10 +11,11 @@ import AdminPlantes        from './pages/AdminPlantes.jsx'
 import AdminGestionPlantes from './pages/AdminGestionPlantes.jsx'
 import AjouterPlante       from './pages/AjouterPlante.jsx'
 import ModifierPlante      from './pages/ModifierPlante.jsx'
-import AdminUtilisateurs   from './pages/AdminUtilisateurs.jsx'
+import AjouterUtilisateur   from './pages/AjouterUtilisateur.jsx'
 import AdminDashboard      from './pages/AdminDashboard.jsx'
 import AdminGestionUtilisateurs from './pages/AdminGestionUtilisateurs.jsx'
 import ModifierUtilisateur   from './pages/ModifierUtilisateur.jsx'
+
 
 import ProtectedRoute      from './components/ProtectedRoute.jsx'
 
@@ -58,6 +59,7 @@ export default function App() {
         <Route path="plantes/gestion/:id/modifier" element={<ModifierPlante />} />
         <Route path="utilisateurs/gestion" element={<AdminGestionUtilisateurs/>} />
         <Route path="utilisateurs/:id/modifier" element={<ModifierUtilisateur/>} />
+        <Route path="utilisateurs/gestion/ajouter" element={<AjouterUtilisateur/>} />
         <Route path="dashboard" element={<AdminDashboard />} />
       </Route>
 

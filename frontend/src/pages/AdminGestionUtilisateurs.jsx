@@ -48,7 +48,7 @@ export default function AdminUtilisateurs() {
         />
         <button
           className="au-add"
-          onClick={() => nav('/admin/utilisateurs/ajouter')}
+          onClick={() => nav('/admin/utilisateurs/gestion/ajouter')}
         >
           + Ajouter
         </button>
