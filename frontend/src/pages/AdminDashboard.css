@@ -1,1 +1,58 @@
-.stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.db-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .db-back {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    color: #3b2810;
+    cursor: pointer;
+    margin-bottom: 1rem;
+  }
+  
+  .db-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  /* Centrage des 3 cartes principales */
+  .db-stats-centered {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+  
+  .db-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1.25rem;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    min-width: 180px;
+  }
+  
+  .db-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+  }
+  
+  /* Grilles pour régions et vertus */
+  .db-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .db-loading {
+    text-align: center;
+    padding: 4rem;
+    font-size: 1.25rem;
+  }
+  
