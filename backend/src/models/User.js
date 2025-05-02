@@ -13,26 +13,28 @@ module.exports = {
 
     findById: id => new Promise((res, rej) => {
       db.get(
-        'SELECT id, nom, role, derniere_connexion, nombre_connexion, description_utilisateur FROM utilisateurs WHERE id = ?',
+        `SELECT id, nom, role, derniere_connexion, nombre_connexion, description_utilisateur
+         FROM utilisateurs WHERE id = ?`,
         [id],
         (e, row) => e ? rej(e) : res(row)
-      )
+      );
     }),
 
     getAll: () => new Promise((res, rej) => {
       db.all(
-      'SELECT id, nom, role, derniere_connexion, nombre_connexion, description_utilisateur FROM utilisateurs',
+        `SELECT id, nom, role, derniere_connexion, nombre_connexion, description_utilisateur
+         FROM utilisateurs`,
         [],
         (e, rows) => e ? rej(e) : res(rows)
-      )
+      );
     }),
 
-  create: ({ nom, mot_de_passe, role }) =>
-    new Promise((res, rej) => {
+    create: ({ nom, mot_de_passe, role, description_utilisateur }) => new Promise((res, rej) => {
       db.run(
-        'INSERT INTO utilisateurs (nom, mot_de_passe, role) VALUES (?, ?, ?)',
-        [nom, mot_de_passe, role || 'user'],
-        function (err) {
+        `INSERT INTO utilisateurs (nom, mot_de_passe, role, description_utilisateur)
+         VALUES (?, ?, ?, ?)`,
+        [nom, mot_de_passe, role || 'user', description_utilisateur || null],
+        function(err) {
           if (err) return rej(err);
           res({ id: this.lastID });
         }
@@ -60,23 +62,21 @@ module.exports = {
       );
     }),
 
-  update: ({ id, nom, mot_de_passe, description_utilisateur }) =>
-    new Promise((res, rej) => {
-    const sets = [];
-    const params = [];
-
-    if (nom           !== undefined) { sets.push('nom = ?');                  params.push(nom); }
-    if (mot_de_passe  !== undefined) { sets.push('mot_de_passe = ?');         params.push(mot_de_passe); }
-    if (description_utilisateur !== undefined) {
-      sets.push('description_utilisateur = ?');
-      params.push(description_utilisateur);
-    }
-    params.push(id);
-
-    const sql = `UPDATE utilisateurs SET ${sets.join(', ')} WHERE id = ?`;
-    db.run(sql, params, function(err) {
-      if (err) return rej(err);
-      res({ changes: this.changes });
-    });
-  })
+    update: ({ id, nom, mot_de_passe, description_utilisateur }) => new Promise((res, rej) => {
+      const sets = ['nom = ?', 'description_utilisateur = ?'];
+      const params = [nom, description_utilisateur];
+      if (mot_de_passe) {
+        sets.push('mot_de_passe = ?');
+        params.push(mot_de_passe);
+      }
+      params.push(id);
+      db.run(
+        `UPDATE utilisateurs SET ${sets.join(', ')} WHERE id = ?`,
+        params,
+        function(err) {
+          if (err) return rej(err);
+          res({ changes: this.changes });
+        }
+      );
+    })
 };

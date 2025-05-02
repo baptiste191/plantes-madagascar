@@ -58,6 +58,18 @@ const Photo = {
       );
     }),
 
+  deleteByPlante: plante_id =>
+    new Promise((res, rej) => {
+    db.run(
+      'DELETE FROM photos WHERE plante_id = ?',
+      [plante_id],
+      function(err) {
+        if (err) return rej(err);
+        res({ changes: this.changes });
+      }
+    );
+  }),
+
   // Optionnel : suppression fichier + base (si tu veux centraliser)
   deleteWithFile: async id => {
     const photo = await Photo.getById(id);

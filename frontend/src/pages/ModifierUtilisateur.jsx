@@ -1,21 +1,20 @@
-// src/pages/ModifierUtilisateur.jsx
 import React, { useState, useEffect } from 'react'
-import { useNavigate, useParams }      from 'react-router-dom'
-import api                              from '../services/api'
+import { useNavigate, useParams } from 'react-router-dom'
+import api from '../services/api'
 import './ModifierUtilisateur.css'
 
 export default function ModifierUtilisateur() {
   const { id } = useParams()
-  const nav    = useNavigate()
+  const nav   = useNavigate()
 
-  const [user, setUser]               = useState(null)
-  const [form, setForm]               = useState({
+  const [user, setUser] = useState(null)
+  const [form, setForm] = useState({
     nom: '',
     description_utilisateur: '',
     mot_de_passe: ''
   })
   const [showConfirm, setShowConfirm] = useState(false)
-  const [error, setError]             = useState(null)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     api.get(`/utilisateurs/${id}`)
@@ -27,18 +26,13 @@ export default function ModifierUtilisateur() {
           mot_de_passe: ''
         })
       })
-      .catch(() => setError('Impossible de charger l’utilisateur'))
+      .catch(() => setError("Impossible de charger l’utilisateur"))
   }, [id])
 
-  const handleChange = e => {
-    const { name, value } = e.target
-    setForm(f => ({ ...f, [name]: value }))
-  }
+  const handleChange = e =>
+    setForm(f => ({ ...f, [e.target.name]: e.target.value }))
 
-  const onSubmit = e => {
-    e.preventDefault()
-    setShowConfirm(true)
-  }
+  const onSubmit = e => { e.preventDefault(); setShowConfirm(true) }
   const onCancel = () => setShowConfirm(false)
 
   const onConfirm = async () => {
@@ -48,8 +42,10 @@ export default function ModifierUtilisateur() {
         description_utilisateur: form.description_utilisateur,
         ...(form.mot_de_passe ? { mot_de_passe: form.mot_de_passe } : {})
       })
+      setShowConfirm(false)
       nav('/admin/utilisateurs/gestion', { replace: true })
-    } catch (err) {
+    } catch {
+      setShowConfirm(false)
       alert('Erreur lors de la modification')
     }
   }
@@ -67,8 +63,7 @@ export default function ModifierUtilisateur() {
           <label htmlFor="nom">Nom d’utilisateur</label>
           <input
             id="nom" name="nom" type="text"
-            value={form.nom}
-            onChange={handleChange}
+            value={form.nom} onChange={handleChange}
             required
           />
         </div>
@@ -87,12 +82,9 @@ export default function ModifierUtilisateur() {
         <div className="mu-field">
           <label htmlFor="mot_de_passe">Nouveau mot de passe</label>
           <input
-            id="mot_de_passe"
-            name="mot_de_passe"
-            type="password"
+            id="mot_de_passe" name="mot_de_passe" type="password"
             placeholder="Laissez vide pour ne pas changer"
-            value={form.mot_de_passe}
-            onChange={handleChange}
+            value={form.mot_de_passe} onChange={handleChange}
           />
         </div>
 

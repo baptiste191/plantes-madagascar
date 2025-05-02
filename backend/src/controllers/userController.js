@@ -54,9 +54,9 @@ exports.getUserById = async (req, res) => {
 
 exports.createUser = async (req, res) => {
   try {
-    const { nom, mot_de_passe, role } = req.body;
+    const { nom, mot_de_passe, role, description_utilisateur } = req.body;
     const hash = await bcrypt.hash(mot_de_passe, 10);
-    const result = await User.create({ nom, mot_de_passe: hash, role });
+    const result = await User.create({ nom, mot_de_passe: hash, role, description_utilisateur });
     res.status(201).json(result);
   } catch (err) {
     logger.error(err);
