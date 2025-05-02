@@ -60,7 +60,7 @@ export default function AdminGestionPlantes() {
 
   return (
     <div className="gp-container">
-      <button className="gp-back" onClick={() => navigate(-1)}>
+      <button className="gp-back" onClick={() => navigate('/admin', { replace: true })}>
         ← Retour
       </button>
 
