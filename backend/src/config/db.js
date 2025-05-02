@@ -1,23 +1,27 @@
 // backend/src/config/db.js
+require('dotenv').config()
 const path    = require('path')
 const sqlite3 = require('sqlite3').verbose()
 
-// Résolution du chemin vers backend/db/database.sqlite
-const dbPath = path.resolve(__dirname, '../../db/database.sqlite')
-console.log('🔍 [config/db] using SQLite at:', dbPath)
+// 1) On considère que DB_FILE est un chemin relatif à la racine de backend/
+//    par défaut "db/database.sqlite"
+const dbRelative = process.env.DB_FILE || 'db/database.sqlite'
 
-// Ouvre en lecture-écriture ET création si absent
-const db = new sqlite3.Database(
-  dbPath,
-  sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
-  err => {
-    if (err) {
-      console.error('❌ Impossible d’ouvrir/créer la base de données:', err)
-    } else {
-      console.log(`✅ Base SQLite prête : ${dbPath}`)
-    }
+// 2) __dirname === .../backend/src/config
+//    on remonte 2 niveaux pour arriver sur .../backend
+const projectRoot = path.resolve(__dirname, '..', '..')
+
+// 3) on combine racine + chemin relatif
+const dbPath = path.resolve(__dirname, '../../db/database.sqlite');
+
+const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, err => {
+  if (err) {
+    console.error('❌ Impossible d’ouvrir/créer la base de données:', err)
+  } else {
+    console.log(`✅ Base SQLite chargée : ${dbPath}`)
   }
-)
+})
+
 
 // Création des tables si besoin
 db.serialize(() => {

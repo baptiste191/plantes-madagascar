@@ -1,4 +1,5 @@
 // backend/src/seed.js
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 const db     = require('./config/db');
 const User   = require('./models/User');
@@ -8,11 +9,15 @@ const Photo  = require('./models/Photo');
 async function seed() {
   try {
     // 1. UTILISATEURS
-    const saltRounds = 10;
-    const adminHash = await bcrypt.hash('admin123', saltRounds);
-    const userHash  = await bcrypt.hash('utilisateur123', saltRounds);
+    const saltRounds      = parseInt(process.env.SALT_ROUNDS, 10) || 10;
+    const adminPwd        = process.env.SEED_ADMIN_PASSWORD;
+    const utilisateurPwd  = process.env.SEED_USER_PASSWORD;
 
-    await User.create({ nom: 'admin', mot_de_passe: adminHash, role: 'admin' });
+    const adminHash = await bcrypt.hash(adminPwd, saltRounds);
+    const userHash  = await bcrypt.hash(utilisateurPwd, saltRounds);
+
+    // recréer les comptes
+    await User.create({ nom: 'admin',       mot_de_passe: adminHash, role: 'admin' });
     await User.create({ nom: 'utilisateur', mot_de_passe: userHash, role: 'user' });
     console.log('→ Utilisateurs créés');
 
