@@ -1,3 +1,4 @@
+// src/pages/AdminGestionPlantes.jsx
 import React, { useState, useEffect } from 'react'
 import { useNavigate, Link }         from 'react-router-dom'
 import api                           from '../services/api'
@@ -10,7 +11,7 @@ export default function AdminGestionPlantes() {
   const [search, setSearch]       = useState('')
   const [toDelete, setToDelete]   = useState(null)
 
-  // Chargement initial
+  // Chargement initial des plantes + photos
   useEffect(() => {
     Promise.all([
       api.get('/plantes'),
@@ -32,13 +33,13 @@ export default function AdminGestionPlantes() {
     })
   }, [])
 
-  // Recherche dynamique
+  // Recherche dynamique sur nom scientifique, vernaculaire et famille
   useEffect(() => {
     const q = search.trim().toLowerCase()
     setPlants(
       !q ? allPlants
          : allPlants.filter(p =>
-             [p.nom_scientifique, p.nom_vernaculaire, p.regions]
+             [p.nom_scientifique, p.nom_vernaculaire, p.famille]
                .join(' ')
                .toLowerCase()
                .includes(q)
@@ -49,7 +50,7 @@ export default function AdminGestionPlantes() {
   const confirmDelete = id => setToDelete(id)
   const cancelDelete  = () => setToDelete(null)
 
-  // 3) Suppression
+  // Suppression d’une plante
   const doDelete = async () => {
     await api.delete(`/plantes/${toDelete}`)
     const updated = allPlants.filter(p => p.id !== toDelete)
@@ -60,7 +61,10 @@ export default function AdminGestionPlantes() {
 
   return (
     <div className="gp-container">
-      <button className="gp-back" onClick={() => navigate('/admin', { replace: true })}>
+      <button
+        className="gp-back"
+        onClick={() => navigate('/admin', { replace: true })}
+      >
         ← Retour
       </button>
 
@@ -72,7 +76,7 @@ export default function AdminGestionPlantes() {
         </Link>
         <input
           type="text"
-          placeholder="Rechercher par nom, région…"
+          placeholder="Rechercher par nom, famille…"
           value={search}
           onChange={e => setSearch(e.target.value)}
           className="gp-search"
@@ -85,7 +89,7 @@ export default function AdminGestionPlantes() {
             <th>Photo</th>
             <th>Nom scientifique</th>
             <th>Nom vernaculaire</th>
-            <th>Régions</th>
+            <th>Famille</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -105,7 +109,7 @@ export default function AdminGestionPlantes() {
               </td>
               <td>{p.nom_scientifique}</td>
               <td>{p.nom_vernaculaire}</td>
-              <td>{p.regions}</td>
+              <td>{p.famille}</td>
               <td>
                 <Link to={`${p.id}/modifier`} className="gp-btn">
                   Modifier

@@ -6,8 +6,8 @@ import NoImage                        from '@/components/NoImage'
 import './PlantDetail.css'
 
 export default function PlantDetail() {
-  const { id }          = useParams()
-  const nav             = useNavigate()
+  const { id }           = useParams()
+  const nav              = useNavigate()
   const { user, logout } = useAuth()
 
   const [plant, setPlant]   = useState(null)
@@ -31,7 +31,8 @@ export default function PlantDetail() {
     mode_preparation,
     contre_indications,
     remarques,
-    bibliographie
+    bibliographie,
+    endemique           // ← on suppose que votre back renvoie désormais ce booléen
   } = plant
 
   return (
@@ -39,7 +40,7 @@ export default function PlantDetail() {
       <header className="pd-header">
         <div className="pd-left">
           <img src="/logo.png" alt="MadaPlants" className="pd-logo" />
-            <button className="pd-back" onClick={() => nav(-1)}>
+          <button className="pd-back" onClick={() => nav(-1)}>
             ← Retour
           </button>
         </div>
@@ -74,9 +75,19 @@ export default function PlantDetail() {
         <section className="pd-details">
           <div><strong>Région :</strong> {regions}</div>
           <div><strong>Vertus :</strong> {vertus}</div>
-          <div><strong>Usages :</strong> {usages}</div>
+          <div>
+            <strong>Plante endémique :</strong>{' '}
+            {endemique ? 'Oui' : 'Non'}
+          </div>
+          <div>
+            <strong>Maladie traitée ou Indication thérapeutique :</strong>{' '}
+            {usages}
+          </div>
           <div><strong>Parties utilisées :</strong> {parties_utilisees}</div>
-          <div><strong>Mode de préparation :</strong> {mode_preparation}</div>
+          <div>
+            <strong>Posologie :</strong>{' '}
+            {mode_preparation}
+          </div>
           <div><strong>Contre-indications :</strong> {contre_indications}</div>
           {remarques && <div><strong>Remarques :</strong> {remarques}</div>}
           {bibliographie && (

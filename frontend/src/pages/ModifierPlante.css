@@ -67,3 +67,14 @@
   .mp-btn-confirm { background: #3b2810; color: #fff; }
   .mp-btn-cancel { background: #ccc; color: #000; }
   
+  /* juste en dessous de .mp-field label { … } */
+.mp-radio-group {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.mp-label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.25rem;
+}

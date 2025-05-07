@@ -147,3 +147,16 @@
   line-height: 16px;
   cursor: pointer;
 }
+
+/* pour aligner les radios sur la même ligne */
+.ap-radio-group {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+/* label en gras */
+.ap-label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.25rem;
+}

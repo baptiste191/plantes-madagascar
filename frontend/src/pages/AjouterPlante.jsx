@@ -7,32 +7,39 @@ import './AjouterPlante.css'
 export default function AjouterPlante() {
   const nav = useNavigate()
 
-  const [form, setForm]   = useState({
+  const [form, setForm] = useState({
     nom_scientifique: '',
+    famille:          '',
     nom_vernaculaire: '',
-    regions: '',
-    vertus: '',
-    usages: '',
-    parties_utilisees: '',
+    regions:          '',
+    vertus:           '',
+    usages:           '',
+    parties_utilisees:'',
     mode_preparation: '',
-    contre_indications: '',
-    remarques: '',
-    references_biblio: ''
+    contre_indications:'',
+    remarques:        '',
+    references_biblio:'',
+    endemique:        false
   })
   const [files, setFiles] = useState([])
-
   const [showConfirm, setShowConfirm] = useState(false)
 
   const handleChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value })
+    const { name, type, value, checked } = e.target
+    const val = type === 'checkbox'
+      ? checked
+      : type === 'radio'
+        ? (value === 'true')
+        : value
+    setForm(f => ({ ...f, [name]: val }))
   }
 
   const handleFiles = e => {
-    const selected = Array.from(e.target.files)
+    const added = Array.from(e.target.files)
     setFiles(prev => {
-      const combined = [...prev, ...selected]
-      const unique   = combined.filter((f, i, arr) =>
-        arr.findIndex(x => x.name === f.name) === i
+      const combined = [...prev, ...added]
+      const unique   = combined.filter(
+        (f,i,a) => a.findIndex(x=>x.name===f.name)===i
       )
       return unique.slice(0, 4)
     })
@@ -40,7 +47,7 @@ export default function AjouterPlante() {
   }
 
   const removeFile = idx => {
-    setFiles(prev => prev.filter((_, i) => i !== idx))
+    setFiles(prev => prev.filter((_,i)=>i!==idx))
   }
 
   const onCreateClick = e => {
@@ -51,7 +58,22 @@ export default function AjouterPlante() {
 
   const onConfirm = async () => {
     try {
-      const { data: { id } } = await api.post('/plantes', form)
+      // 1) création de la plante
+      const { data: { id } } = await api.post('/plantes', {
+        nom_scientifique:   form.nom_scientifique,
+        famille:            form.famille,
+        nom_vernaculaire:   form.nom_vernaculaire,
+        regions:            form.regions,
+        vertus:             form.vertus,
+        usages:             form.usages,
+        parties_utilisees:  form.parties_utilisees,
+        mode_preparation:   form.mode_preparation,
+        contre_indications: form.contre_indications,
+        remarques:          form.remarques,
+        bibliographie:      form.references_biblio,
+        endemique:          form.endemique
+      })
+      // 2) upload des photos
       for (let file of files) {
         const fd = new FormData()
         fd.append('photo', file)
@@ -79,12 +101,13 @@ export default function AjouterPlante() {
       <form onSubmit={onCreateClick} className="ap-form">
         {[
           ['nom_scientifique','Nom scientifique'],
+          ['famille','Famille'],
           ['nom_vernaculaire','Nom vernaculaire'],
           ['regions','Régions (ex : DIANA, SAVA)'],
           ['vertus','Vertus'],
-          ['usages','Usages'],
+          ['usages','Maladie traitée ou Indication thérapeutique'],
           ['parties_utilisees','Parties utilisées'],
-          ['mode_preparation','Mode de préparation'],
+          ['mode_preparation','Posologie'],
           ['contre_indications','Contre-indications'],
           ['remarques','Remarques'],
           ['references_biblio','Bibliographie']
@@ -101,6 +124,30 @@ export default function AjouterPlante() {
             />
           </div>
         ))}
+
+        <div className="ap-field">
+          <label className="ap-label">Plante endémique</label>
+          <div className="ap-radio-group">
+            <label>
+              <input
+                type="radio"
+                name="endemique"
+                value="true"
+                checked={form.endemique === true}
+                onChange={handleChange}
+              /> Oui
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="endemique"
+                value="false"
+                checked={form.endemique === false}
+                onChange={handleChange}
+              /> Non
+            </label>
+          </div>
+        </div>
 
         <div className="ap-field">
           <label>Photos (0 à 4)</label>
