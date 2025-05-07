@@ -22,7 +22,7 @@ module.exports = {
     const cols = [
       'nom_scientifique','famille','nom_vernaculaire','regions','vertus',
       'usages','parties_utilisees','mode_preparation',
-      'contre_indications','remarques','bibliographie'
+      'contre_indications','remarques','bibliographie','endemique'
     ];
     const placeholders = cols.map(() => '?').join(',');
     const vals = cols.map(c => p[c]);
@@ -40,10 +40,10 @@ module.exports = {
     const cols = [
       'nom_scientifique','famille','nom_vernaculaire','regions','vertus',
       'usages','parties_utilisees','mode_preparation',
-      'contre_indications','remarques','bibliographie'
+      'contre_indications','remarques','bibliographie','endemique'
     ];
     const assignments = cols.map(c => `${c} = ?`).join(',');
-    const vals = cols.map(c => p[c]);
+    const vals = cols.map(c => p[c] ?? 0);
     vals.push(id);
     db.run(
       `UPDATE plantes SET ${assignments} WHERE id = ?`,

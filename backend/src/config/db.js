@@ -39,6 +39,7 @@ db.serialize(() => {
     nom_scientifique TEXT NOT NULL,
     famille TEXT,
     nom_vernaculaire TEXT,
+    endemique INTEGER NOT NULL DEFAULT 0,
     regions TEXT,
     vertus TEXT,
     usages TEXT,
