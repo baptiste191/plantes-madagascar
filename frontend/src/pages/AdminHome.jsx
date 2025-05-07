@@ -1,6 +1,6 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
-import { useAuth } from '../hooks/useAuth'
+import { Link, Outlet } from 'react-router-dom'
+import { useAuth }      from '../hooks/useAuth'
 import './AdminHome.css'
 
 export default function AdminHome() {
@@ -19,8 +19,18 @@ export default function AdminHome() {
         </div>
       </header>
 
-      {/** C’est ici que s’affichent les pages “index”, “plantes”, “utilisateurs”, etc. */}
+      {/* bouton “Mon profil” */}
+      <div className="admin-profile">
+        <Link
+          to={`profil/${user.id}/modifier`}
+          className="admin-profile-btn"
+        >
+          🛠 Mon profil
+        </Link>
+      </div>
+
       <main className="admin-content">
+        {/*** C’est ici que s’affichent les pages imbriquées ***/}
         <Outlet />
       </main>
     </div>

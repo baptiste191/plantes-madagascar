@@ -93,3 +93,22 @@
 .admin-content {
   padding: 2rem 1rem;
 }
+
+/* nouveau bloc “Mon profil” */
+.admin-profile {
+  max-width: 1024px;
+  margin: 1rem auto;
+  text-align: center;
+}
+.admin-profile-btn {
+  display: inline-block;
+  background: #8d9660;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+}
+.admin-profile-btn:hover {
+  background: #7a8554;
+}

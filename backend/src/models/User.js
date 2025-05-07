@@ -11,14 +11,22 @@ module.exports = {
       );
     }),
 
-    findById: id => new Promise((res, rej) => {
-      db.get(
-        `SELECT id, nom, role, derniere_connexion, nombre_connexion, description_utilisateur
-         FROM utilisateurs WHERE id = ?`,
-        [id],
-        (e, row) => e ? rej(e) : res(row)
-      );
-    }),
+    findById: id =>
+      new Promise((res, rej) => {
+        db.get(
+          `SELECT 
+             id,
+             nom,
+             role,
+             description_utilisateur,
+             derniere_connexion,
+             nombre_connexion
+           FROM utilisateurs
+           WHERE id = ?`,
+          [id],
+          (e, row) => e ? rej(e) : res(row)
+        )
+      }),
 
     getAll: () => new Promise((res, rej) => {
       db.all(
@@ -62,21 +70,36 @@ module.exports = {
       );
     }),
 
-    update: ({ id, nom, mot_de_passe, description_utilisateur }) => new Promise((res, rej) => {
-      const sets = ['nom = ?', 'description_utilisateur = ?'];
-      const params = [nom, description_utilisateur];
-      if (mot_de_passe) {
-        sets.push('mot_de_passe = ?');
-        params.push(mot_de_passe);
+  update: ({ id, nom, mot_de_passe, description_utilisateur }) =>
+    new Promise((resolve, reject) => {
+      const fields = []
+      const params = []
+
+      if (nom !== undefined) {
+        fields.push('nom = ?')
+        params.push(nom)
       }
-      params.push(id);
-      db.run(
-        `UPDATE utilisateurs SET ${sets.join(', ')} WHERE id = ?`,
-        params,
-        function(err) {
-          if (err) return rej(err);
-          res({ changes: this.changes });
-        }
-      );
+      if (mot_de_passe !== undefined) {
+        fields.push('mot_de_passe = ?')
+        params.push(mot_de_passe)
+      }
+      if (description_utilisateur !== undefined) {
+        fields.push('description_utilisateur = ?')
+        params.push(description_utilisateur)
+      }
+
+      // rien à mettre à jour ?
+      if (fields.length === 0) {
+        return resolve({ changes: 0 })
+      }
+
+      // on construit la requête
+      const sql = `UPDATE utilisateurs SET ${fields.join(', ')} WHERE id = ?`
+      params.push(id)
+
+      db.run(sql, params, function(err) {
+        if (err) return reject(err)
+        resolve({ changes: this.changes })
+      })
     })
 };

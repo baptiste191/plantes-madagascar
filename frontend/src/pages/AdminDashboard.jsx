@@ -1,3 +1,4 @@
+// src/pages/AdminDashboard.jsx
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../services/api'
@@ -29,39 +30,31 @@ export default function AdminDashboard() {
 
   if (loading) return <div className="db-loading">Chargement...</div>
 
-  // Statistiques
+  // Statistiques globales
   const totalPlants = plants.length
   const totalUsers = users.length
   const totalConnections = users.reduce((sum, u) => sum + (u.nombre_connexion || 0), 0)
 
-  // Régions
-  const regionCounts = plants.reduce((acc, p) => {
-    (p.regions || '')
-      .split(',')
-      .map(r => r.trim())
-      .filter(r => r)
-      .forEach(r => { acc[r] = (acc[r] || 0) + 1 })
-    return acc
-  }, {})
-
-  // Vertus ciblées
-  const virtuesList = [
-    'antioxydante',
-    'nutritive',
-    'anti-inflammatoire',
-    'cicatrisante',
-    'antiseptique',
-    'tonique',
-    'astringent'
+  // Familles fixées
+  const familiesList = [
+    'Anacardiaceae','Annonaceae','Apocynaceae','Asteraceae','Bignoniaceae',
+    'Cannelaceae','Caricaceae','Combretaceae','Crassulaceae','Cucurbitaceae',
+    'Cycadaceae','Erythroxylaceae','Euphorbiaceae','Fabaceae','Lauraceae',
+    'Leeaceae','Loganiaceae','Lythraceae','Malvaceae','Meliaceae',
+    'Menispermaceae','Moraceae','Musaceae','Myristicaceae','Myrtaceae',
+    'Opiliaceae','Phyllanthaceae','Piperaceae','Poaceae','Rhamnaceae',
+    'Rubiaceae','Rutaceae','Salicaceae','Sapindaceae','Thymelaeaceae',
+    'Verbenacae','Xanthorrhoeaceae'
   ]
-  const virtueCounts = plants.reduce((acc, p) => {
-    (p.vertus || '')
-      .split(',')
-      .map(v => v.trim())
-      .filter(v => v)
-      .forEach(v => {
-        if (virtuesList.includes(v)) acc[v] = (acc[v] || 0) + 1
-      })
+
+  // Compte le nombre de plantes par famille (classe celles qui ne figurent pas dans la liste dans "Autres")
+  const familyCounts = plants.reduce((acc, p) => {
+    const fam = p.famille || 'Inconnue'
+    if (familiesList.includes(fam)) {
+      acc[fam] = (acc[fam] || 0) + 1
+    } else {
+      acc.Autres = (acc.Autres || 0) + 1
+    }
     return acc
   }, {})
 
@@ -89,28 +82,20 @@ export default function AdminDashboard() {
       </div>
 
       <section>
-        <h3>Plantes par région : </h3>
+        <h3>Plantes par famille :</h3>
         <div className="db-grid">
-          {Object.entries(regionCounts).map(([region, count]) => (
-            <div key={region} className="db-card">
-              <strong>{region}</strong>
-              <p>{count}</p>
+          {familiesList.map(fam => (
+            <div key={fam} className="db-card">
+              <strong>{fam}</strong>
+              <p>{familyCounts[fam] || 0}</p>
             </div>
           ))}
-        </div>
-      </section>
-
-      <section>
-        <h3>Plantes par vertus : </h3>
-        <div className="db-grid">
-          {virtuesList.map(v => (
-            <div key={v} className="db-card">
-              <strong>
-                {v.charAt(0).toUpperCase() + v.slice(1).replace('-', ' ')}
-              </strong>
-              <p>{virtueCounts[v] || 0}</p>
+          {familyCounts.Autres != null && (
+            <div className="db-card">
+              <strong>Autres</strong>
+              <p>{familyCounts.Autres}</p>
             </div>
-          ))}
+          )}
         </div>
       </section>
     </div>
