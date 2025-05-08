@@ -147,10 +147,10 @@ export default function ModifierPlante() {
           ['famille','Famille'],
           ['nom_vernaculaire','Nom vernaculaire'],
           ['regions','Régions'],
-          ['vertus','Vertus'],
-          ['usages','Maladie traitée ou Indication thérapeutique'],
+          ['vertus','Maladie traitée ou Indication thérapeutique'],
+          ['usages','Posologie'],
           ['parties_utilisees','Parties utilisées'],
-          ['mode_preparation','Posologie'],
+          ['mode_preparation','Mode de préparation'],
           ['contre_indications','Contre-indications'],
           ['remarques','Remarques'],
           ['references_biblio','Bibliographie']

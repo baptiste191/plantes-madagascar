@@ -74,18 +74,18 @@ export default function PlantDetail() {
 
         <section className="pd-details">
           <div><strong>Région :</strong> {regions}</div>
-          <div><strong>Vertus :</strong> {vertus}</div>
+          <div><strong>Maladie traitée ou Indication thérapeutique :</strong> {vertus}</div>
           <div>
             <strong>Plante endémique :</strong>{' '}
             {endemique ? 'Oui' : 'Non'}
           </div>
           <div>
-            <strong>Maladie traitée ou Indication thérapeutique :</strong>{' '}
+            <strong>Posologie :</strong>{' '}
             {usages}
           </div>
           <div><strong>Parties utilisées :</strong> {parties_utilisees}</div>
           <div>
-            <strong>Posologie :</strong>{' '}
+            <strong>Mode de préparation :</strong>{' '}
             {mode_preparation}
           </div>
           <div><strong>Contre-indications :</strong> {contre_indications}</div>
