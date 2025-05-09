@@ -1,37 +1,54 @@
+/* src/pages/AdminHome.css */
+
 .admin-page {
   background: #faf5eb;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
+/* ============ HEADER ============ */
 .admin-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1rem 2rem;
   border-bottom: 1px solid #e0d8cc;
+  flex-shrink: 0;
+  box-sizing: border-box;
 }
 
+/* Logo */
 .admin-logo {
   height: 196px;
+  object-fit: contain;
 }
 
+/* Titre MadaPlants */
 .admin-title {
-  font-size: 3.5rem;
-  color: #3b2810;
   flex: 1;
   text-align: center;
+  font-size: 3.5rem;
+  color: #3b2810;
+  margin: 0;
 }
 
+/* Zone utilisateur (nom + déconnexion) */
 .admin-user-area {
-  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
 }
 
+/* Nom de l’admin */
 .admin-username {
-  margin-right: 0.5rem;
   color: #3b2810;
   font-weight: 500;
+  margin: 0;
 }
 
+/* Bouton Déconnexion */
 .admin-logout {
   padding: 0.5rem 1rem;
   background: #fff;
@@ -39,20 +56,48 @@
   border-radius: 4px;
   color: #3b2810;
   cursor: pointer;
+  font-size: 0.9rem;
 }
 .admin-logout:hover {
   background: #3b2810;
   color: #fff;
 }
 
-/* ==== CE QUI CHANGE ICI : une grille fixe à 4 colonnes ==== */
+/* ============ “Mon profil” ============ */
+.admin-profile {
+  max-width: 1024px;
+  margin: 1rem auto;
+  text-align: center;
+}
+.admin-profile-btn {
+  display: inline-block;
+  background: #8d9660;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+}
+.admin-profile-btn:hover {
+  background: #7a8554;
+}
+
+/* ============ CONTENU NESTED (plantes, users, dashboard) ============ */
+.admin-content {
+  flex: 1;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+/* ============ GRID ADMIN (exemple dashboard) ============ */
 .admin-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);   /* 4 colonnes de largeur égale */
+  grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
   max-width: 1280px;
   margin: 2rem auto;
   padding: 0 1rem;
+  box-sizing: border-box;
 }
 
 .admin-card {
@@ -71,44 +116,48 @@
   transform: translateY(-4px);
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
-
 .admin-card-icon {
   color: #4a7947;
   margin-bottom: 0.5rem;
 }
-
 .admin-card h2 {
   font-size: 1.25rem;
   color: #3b2810;
-  margin-bottom: 0.25rem;
+  margin: 0 0 0.25rem;
   text-align: center;
 }
-
 .admin-card p {
   font-size: 0.9rem;
   text-align: center;
   color: #656262;
 }
 
-.admin-content {
-  padding: 2rem 1rem;
-}
+/* ============ ADAPTATION MOBILE ============ */
+@media (max-width: 767px) {
+  .admin-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+    gap: 0.5rem;
+  }
+  .admin-logo {
+    height: 100px;
+    margin-bottom: 0.5rem;
+  }
+  .admin-title {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .admin-user-area {
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+  }
 
-/* nouveau bloc “Mon profil” */
-.admin-profile {
-  max-width: 1024px;
-  margin: 1rem auto;
-  text-align: center;
-}
-.admin-profile-btn {
-  display: inline-block;
-  background: #8d9660;
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: 500;
-}
-.admin-profile-btn:hover {
-  background: #7a8554;
+  /* Dashboard / grid pages */
+  .admin-grid {
+    grid-template-columns: repeat(2, 1fr);
+    margin: 1rem auto;
+  }
 }

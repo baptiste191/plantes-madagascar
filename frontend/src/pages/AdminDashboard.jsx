@@ -39,14 +39,20 @@ export default function AdminDashboard() {
 
   // 3) Liste de familles « officielles »
   const familiesList = [
-    'Anacardiaceae','Annonaceae','Apocynaceae','Asteraceae','Bignoniaceae',
-    'Cannelaceae','Caricaceae','Combretaceae','Crassulaceae','Cucurbitaceae',
-    'Cycadaceae','Erythroxylaceae','Euphorbiaceae','Fabaceae','Lauraceae',
-    'Leeaceae','Loganiaceae','Lythraceae','Malvaceae','Meliaceae',
-    'Menispermaceae','Moraceae','Musaceae','Myristicaceae','Myrtaceae',
-    'Opiliaceae','Phyllanthaceae','Piperaceae','Poaceae','Rhamnaceae',
-    'Rubiaceae','Rutaceae','Salicaceae','Sapindaceae','Thymelaeaceae',
-    'Verbenacae','Xanthorrhoeaceae'
+    'Amaryllidaceae', 'Anacardiaceae', 'Annonaceae', 'Apiaceae', 'Apocynaceae',
+    'Asparagaceae', 'Asteraceae', 'Bignoniaceae', 'Brassicaceae', 'Cactaceae',
+    'Canellaceae', 'Cannabaceae', 'Cannelaceae', 'Capparaceae', 'Caricaceae',
+    'Celastraceae', 'Combretaceae', 'Convolvulaceae', 'Crassulaceae', 'Cucurbitaceae',
+    'Cycadaceae', 'Cyperaceae', 'Dioscoreaceae', 'Ericaceae', 'Erythroxylaceae',
+    'Euphorbiaceae', 'Fabaceae', 'Gentianaceae', 'Hypericaceae', 'Lamiaceae',
+    'Lauraceae', 'Leeaceae', 'Linaceae', 'Loganiaceae', 'Lythraceae',
+    'Malvaceae', 'Melastomataceae', 'Meliaceae', 'Menispermaceae', 'Molluginceae',
+    'Moraceae', 'Musaceae', 'Myristicaceae', 'Myrtaceae', 'Opiliaceae',
+    'Passifloraceae', 'Phyllanthaceae', 'Piperaceae', 'Poaceae', 'Primulaceae',
+    'Pteridaceae', 'Rhamnaceae', 'Rosaceae', 'Rubiaceae', 'Rutaceae',
+    'Salicaceae', 'Sapindaceae', 'Scrophulariaceae', 'Sphenocleaceae', 'Stilbaceae',
+    'Thymelaeaceae', 'Verbenacae', 'Verbenaceae', 'Vitaceae', 'Xanthorrhoeaceae',
+    'Zinziberaceae'
   ]
   // version lowercase pour la comparaison
   const familiesLC = familiesList.map(f => f.toLowerCase())

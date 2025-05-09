@@ -112,3 +112,17 @@
   display: flex;
   justify-content: space-around;
 }
+
+/* 10) Wrapper pour scroll horizontal sur petits écrans */
+.gp-table-wrapper {
+  overflow-x: auto;
+  /* pour masquer la barre sur desktop si ce n’est pas nécessaire : */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 11) Donne une largeur minimale au tableau
+      pour forcer le scroll quand l’écran est trop étroit */
+.gp-table {
+  min-width: 700px;
+}
+

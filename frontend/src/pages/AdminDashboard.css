@@ -1,58 +1,130 @@
+/* src/pages/AdminDashboard.css */
+
 .db-container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 2rem;
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.db-back {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #3b2810;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.db-title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* — Statistiques principales — */
+.db-stats-centered {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+.db-stats-centered .db-card {
+  flex: 1 1 180px;     /* minimum 180px, puis partage l’espace */
+  max-width: 220px;
+}
+
+/* — Cartes génériques — */
+.db-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.25rem;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.db-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+/* — Grille “Plantes par famille” — */
+.db-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* — État de chargement — */
+.db-loading {
+  text-align: center;
+  padding: 4rem;
+  font-size: 1.25rem;
+}
+
+/* ================================
+   Adaptations pour petits écrans
+   ================================ */
+@media (max-width: 600px) {
+
+  .db-container {
+    padding: 1rem;
   }
-  
-  .db-back {
-    background: none;
-    border: none;
-    font-size: 1rem;
-    color: #3b2810;
-    cursor: pointer;
+
+  .db-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* empile les cartes et les étire à 100% */
+  .db-stats-centered {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  .db-stats-centered .db-card {
+    max-width: none;
+    width: 100%;
+  }
+
+  /* grille une colonne */
+  .db-grid {
+    grid-template-columns: 1fr;
+  }
+  .db-grid .db-card {
+    width: 100%;
+  }
+}
+
+/*  Mobile (max-width:600px) – cartes plus petites pour 2 colonnes */
+@media (max-width: 600px) {
+  .db-container {
+    padding: 1rem;
+  }
+  .db-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Statistiques principales : deux cartes par ligne */
+  .db-stats-centered {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .db-stats-centered .db-card {
+    flex: 1 1 calc(50% - 1rem);
+    max-width: none;
     margin-bottom: 1rem;
   }
-  
-  .db-title {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    text-align: center;
-  }
-  
-  /* Centrage des 3 cartes principales */
-  .db-stats-centered {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-bottom: 3rem;
-  }
-  
-  .db-card {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 1.25rem;
-    text-align: center;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    min-width: 180px;
-  }
-  
-  .db-card h3 {
-    margin: 0 0 0.5rem;
-    font-size: 1.1rem;
-  }
-  
-  /* Grilles pour régions et vertus */
+
+  /* Grille “Plantes par famille” : deux colonnes */
   .db-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
-    margin-bottom: 2rem;
   }
-  
-  .db-loading {
-    text-align: center;
-    padding: 4rem;
-    font-size: 1.25rem;
-  }
-  
+}

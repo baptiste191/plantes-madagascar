@@ -87,7 +87,8 @@ export default function AdminGestionPlantes() {
         />
       </div>
 
-      <table className="gp-table">
+      <div className="gp-table-wrapper">
+        <table className="gp-table">
         <thead>
           <tr>
             <th>Photo</th>
@@ -132,7 +133,8 @@ export default function AdminGestionPlantes() {
             </tr>
           ))}
         </tbody>
-      </table>
+        </table>
+      </div>
 
       {toDelete !== null && (
         <div className="gp-modal">

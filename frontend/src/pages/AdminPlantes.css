@@ -1,9 +1,13 @@
+/* src/pages/AdminPlantes.css */
+
 .ap-page {
   background: #faf5eb;
-  min-height: calc(100vh - 120px); /* header du layout pris en compte */
+  /* on prend en compte la hauteur du header admin (~120px) */
+  min-height: calc(100vh - 120px);
   padding: 1rem;
   max-width: 1024px;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .ap-back {
@@ -20,8 +24,17 @@
   text-decoration: underline;
 }
 
+/* Grille : 2 colonnes par défaut (mobile) */
 .ap-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
+  box-sizing: border-box;
+}
+
+/* À partir de 768px : 4 colonnes (desktop) */
+@media (min-width: 768px) {
+  .ap-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
