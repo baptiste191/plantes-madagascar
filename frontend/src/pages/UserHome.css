@@ -1,40 +1,53 @@
+/* src/pages/UserHome.css */
+
 .user-home {
   background: #faf5eb;
   min-height: 100vh;
   padding: 1rem;
+  box-sizing: border-box;
 }
 
+/* ================= HEADER ================= */
 .uh-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: flex-start;    /* aligne tous les items en haut */
   max-width: 1024px;
   margin: 0 auto 2rem;
+  gap: 1rem;
 }
 
+/* Logo MadaPlants */
 .uh-logo {
   height: 192px;
+  object-fit: contain;
 }
 
+/* Titre centré */
 .uh-title {
+  flex: 1;
+  text-align: center;
   font-size: 4.75rem;
   font-weight: 600;
   color: #3b2810;
-  text-align: center;
-  flex: 1;
+  margin: 0; /* pas de marge verticale pour rester compact */
 }
 
+/* Zone utilisateur (nom + déconnexion) */
 .uh-user {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  flex-direction: column;     /* empile le nom et le bouton */
+  align-items: flex-end;      /* les pousse à droite */
 }
 
+/* Nom de l’utilisateur */
 .uh-username {
   font-size: 1rem;
   color: #3b2810;
+  margin: 0;
 }
 
+/* Bouton Déconnexion */
 .uh-logout {
   margin-top: 0.5rem;
   padding: 0.25rem 0.5rem;
@@ -51,10 +64,42 @@
   color: #fff;
 }
 
+/* ================ GRILLE ================ */
+/* mobile-first : 2 colonnes */
 .uh-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   max-width: 1024px;
   margin: 0 auto;
+}
+
+/* desktop (>=768px) : 4 colonnes */
+@media (min-width: 768px) {
+  .uh-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ============ ADAPTATION MOBILE ============ */
+@media (max-width: 767px) {
+  /* Header empilé pour tenir sur la largeur */
+  .uh-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .uh-logo {
+    height: 100px;
+    margin-bottom: 0.5rem;
+  }
+  .uh-title {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .uh-user {
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+  }
 }
