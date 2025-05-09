@@ -1,57 +1,60 @@
-// src/pages/AdminGestionPlantes.jsx
-import React, { useState, useEffect } from 'react'
-import { useNavigate, Link }         from 'react-router-dom'
-import api                           from '../services/api'
+import React, { useState, useEffect }     from 'react'
+import { useNavigate, Link, useSearchParams } from 'react-router-dom'
+import api                                 from '../services/api'
 import './AdminGestionPlantes.css'
 
 export default function AdminGestionPlantes() {
-  const navigate = useNavigate()
-  const [allPlants, setAllPlants] = useState([])
-  const [plants, setPlants]       = useState([])
-  const [search, setSearch]       = useState('')
-  const [toDelete, setToDelete]   = useState(null)
+  const navigate                               = useNavigate()
+  const [searchParams, setSearchParams]        = useSearchParams()
+  const search                                 = searchParams.get('q') || ''
 
-  // Chargement initial des plantes + photos
+  const [allPlants, setAllPlants] = useState([])
+  const [plants,    setPlants]    = useState([])
+  const [toDelete,  setToDelete]  = useState(null)
+
+  // 1) Chargement initial
   useEffect(() => {
-    Promise.all([
-      api.get('/plantes'),
-      api.get('/photos')
-    ]).then(([{ data: P }, { data: Ph }]) => {
-      const byPlant = Ph.reduce((acc, x) => {
-        acc[x.plante_id] = acc[x.plante_id] || []
-        acc[x.plante_id].push(x)
-        return acc
-      }, {})
-      const enriched = P.map(p => ({
-        ...p,
-        photos: byPlant[p.id] || []
-      })).sort((a,b) =>
-        a.nom_scientifique.localeCompare(b.nom_scientifique)
-      )
-      setAllPlants(enriched)
-      setPlants(enriched)
-    })
+    Promise.all([ api.get('/plantes'), api.get('/photos') ])
+      .then(([{ data: P }, { data: Ph }]) => {
+        const byPlant = Ph.reduce((acc, x) => {
+          acc[x.plante_id] = acc[x.plante_id] || []
+          acc[x.plante_id].push(x)
+          return acc
+        }, {})
+        const enriched = P.map(p => ({
+          ...p,
+          photos: byPlant[p.id] || []
+        })).sort((a,b) =>
+          a.nom_scientifique.localeCompare(b.nom_scientifique)
+        )
+        setAllPlants(enriched)
+        setPlants(enriched)
+      })
   }, [])
 
-  // Recherche dynamique sur nom scientifique, vernaculaire et famille
+  // 2) Filtrage dès que `search` ou `allPlants` change
   useEffect(() => {
     const q = search.trim().toLowerCase()
     setPlants(
-      !q ? allPlants
-         : allPlants.filter(p =>
-             [p.nom_scientifique, p.nom_vernaculaire, p.famille]
-               .join(' ')
-               .toLowerCase()
-               .includes(q)
-           )
+      !q
+        ? allPlants
+        : allPlants.filter(p =>
+            [p.nom_scientifique, p.nom_vernaculaire, p.famille]
+              .join(' ')
+              .toLowerCase()
+              .includes(q)
+          )
     )
   }, [search, allPlants])
 
+  const handleSearch = q => {
+    if (q) setSearchParams({ q })
+    else  setSearchParams({})
+  }
+
   const confirmDelete = id => setToDelete(id)
   const cancelDelete  = () => setToDelete(null)
-
-  // Suppression d’une plante
-  const doDelete = async () => {
+  const doDelete      = async () => {
     await api.delete(`/plantes/${toDelete}`)
     const updated = allPlants.filter(p => p.id !== toDelete)
     setAllPlants(updated)
@@ -71,15 +74,16 @@ export default function AdminGestionPlantes() {
       <h2 className="gp-title">Gestion des plantes</h2>
 
       <div className="gp-actions">
-        <Link to="ajouter" className="gp-add">
+        {/* on propage les query-params vers la page “ajouter” */}
+        <Link to={`ajouter?${searchParams.toString()}`} className="gp-add">
           + Ajouter une plante
         </Link>
         <input
           type="text"
+          className="gp-search"
           placeholder="Rechercher par nom, famille…"
           value={search}
-          onChange={e => setSearch(e.target.value)}
-          className="gp-search"
+          onChange={e => handleSearch(e.target.value)}
         />
       </div>
 
@@ -111,12 +115,16 @@ export default function AdminGestionPlantes() {
               <td>{p.nom_vernaculaire}</td>
               <td>{p.famille}</td>
               <td>
-                <Link to={`${p.id}/modifier`} className="gp-btn">
+                {/* même chose pour la page modifier : on garde `?q=…` */}
+                <Link
+                  to={`${p.id}/modifier?${searchParams.toString()}`}
+                  className="gp-btn"
+                >
                   Modifier
                 </Link>
                 <button
-                  onClick={() => confirmDelete(p.id)}
                   className="gp-btn gp-btn-del"
+                  onClick={() => confirmDelete(p.id)}
                 >
                   Supprimer
                 </button>
@@ -131,12 +139,8 @@ export default function AdminGestionPlantes() {
           <div className="gp-modal-content">
             <p>Confirmez-vous la suppression de cette plante ?</p>
             <div className="gp-modal-actions">
-              <button onClick={doDelete} className="gp-btn">
-                Oui, supprimer
-              </button>
-              <button onClick={cancelDelete} className="gp-btn">
-                Annuler
-              </button>
+              <button onClick={doDelete}   className="gp-btn">Oui, supprimer</button>
+              <button onClick={cancelDelete} className="gp-btn">Annuler</button>
             </div>
           </div>
         </div>

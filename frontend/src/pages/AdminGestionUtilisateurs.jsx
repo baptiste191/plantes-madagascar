@@ -1,28 +1,22 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate }               from 'react-router-dom'
+import { useNavigate, Link }         from 'react-router-dom'
 import api                           from '../services/api'
 import './AdminGestionUtilisateurs.css'
 
 export default function AdminGestionUtilisateurs() {
   const nav = useNavigate()
-  const [allUsers, setAllUsers]     = useState([])
-  const [search, setSearch]         = useState('')
-  const [toDelete, setToDelete]     = useState(null)
-  const [error, setError]           = useState(null)
+  const [users, setUsers]   = useState([])
+  const [search, setSearch] = useState('')
+  const [toDelete, setToDelete] = useState(null)
+  const [error, setError]     = useState(null)
 
   useEffect(() => {
     api.get('/utilisateurs')
-      .then(({ data }) => {
-        // N'afficher que les users, pas les admins
-        setAllUsers(data.filter(u => u.role === 'user'))
-      })
-      .catch(err => {
-        console.error(err)
-        setError("Impossible de charger la liste des utilisateurs")
-      })
+      .then(({ data }) => setUsers(data.filter(u => u.role === 'user')))
+      .catch(() => setError("Impossible de charger la liste des utilisateurs"))
   }, [])
 
-  const filtered = allUsers.filter(u =>
+  const filtered = users.filter(u =>
     u.nom.toLowerCase().includes(search.trim().toLowerCase())
   )
 
@@ -42,10 +36,9 @@ export default function AdminGestionUtilisateurs() {
   const doDelete      = async () => {
     try {
       await api.delete(`/utilisateurs/${toDelete}`)
-      setAllUsers(us => us.filter(u => u.id !== toDelete))
+      setUsers(us => us.filter(u => u.id !== toDelete))
       setToDelete(null)
-    } catch (err) {
-      console.error(err)
+    } catch {
       setError("Erreur lors de la suppression")
       setToDelete(null)
     }
@@ -67,12 +60,9 @@ export default function AdminGestionUtilisateurs() {
           value={search}
           onChange={e => setSearch(e.target.value)}
         />
-        <button
-          className="au-add"
-          onClick={() => nav('/admin/utilisateurs/gestion/ajouter')}
-        >
+        <Link to="/admin/utilisateurs/gestion/ajouter" className="au-add">
           + Ajouter
-        </button>
+        </Link>
       </div>
 
       <div className="au-table-wrapper">
@@ -118,7 +108,7 @@ export default function AdminGestionUtilisateurs() {
           <div className="au-modal">
             <p>Confirmez-vous la suppression de cet utilisateur ?</p>
             <div className="au-modal-actions">
-              <button onClick={doDelete}    className="au-btn-confirm">
+              <button onClick={doDelete} className="au-btn-confirm">
                 Oui, supprimer
               </button>
               <button onClick={cancelDelete} className="au-btn-cancel">

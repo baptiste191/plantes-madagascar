@@ -7,9 +7,10 @@ import './AdminDashboard.css'
 export default function AdminDashboard() {
   const nav = useNavigate()
   const [plants, setPlants] = useState([])
-  const [users, setUsers] = useState([])
+  const [users,  setUsers]  = useState([])
   const [loading, setLoading] = useState(true)
 
+  // 1) Chargement des données
   useEffect(() => {
     async function fetchData() {
       try {
@@ -18,6 +19,7 @@ export default function AdminDashboard() {
           api.get('/utilisateurs')
         ])
         setPlants(plantsData)
+        // ne garder que les "user"
         setUsers(usersData.filter(u => u.role === 'user'))
       } catch (err) {
         console.error(err)
@@ -30,12 +32,12 @@ export default function AdminDashboard() {
 
   if (loading) return <div className="db-loading">Chargement...</div>
 
-  // Statistiques globales
-  const totalPlants = plants.length
-  const totalUsers = users.length
+  // 2) Stats globales
+  const totalPlants      = plants.length
+  const totalUsers       = users.length
   const totalConnections = users.reduce((sum, u) => sum + (u.nombre_connexion || 0), 0)
 
-  // Familles fixées
+  // 3) Liste de familles « officielles »
   const familiesList = [
     'Anacardiaceae','Annonaceae','Apocynaceae','Asteraceae','Bignoniaceae',
     'Cannelaceae','Caricaceae','Combretaceae','Crassulaceae','Cucurbitaceae',
@@ -46,17 +48,25 @@ export default function AdminDashboard() {
     'Rubiaceae','Rutaceae','Salicaceae','Sapindaceae','Thymelaeaceae',
     'Verbenacae','Xanthorrhoeaceae'
   ]
+  // version lowercase pour la comparaison
+  const familiesLC = familiesList.map(f => f.toLowerCase())
 
-  // Compte le nombre de plantes par famille (classe celles qui ne figurent pas dans la liste dans "Autres")
+  // 4) Comptage par famille (inscrit tout ce qui ne matche pas dans "Autres")
   const familyCounts = plants.reduce((acc, p) => {
-    const fam = p.famille || 'Inconnue'
-    if (familiesList.includes(fam)) {
-      acc[fam] = (acc[fam] || 0) + 1
+    const raw = (p.famille || '').trim().toLowerCase()
+    const idx = familiesLC.indexOf(raw)
+    if (idx >= 0) {
+      const key = familiesList[idx]
+      acc[key] = (acc[key] || 0) + 1
     } else {
       acc.Autres = (acc.Autres || 0) + 1
     }
     return acc
   }, {})
+
+  // helper pour n’afficher que première lettre en majuscule
+  const formatFamille = s =>
+    s.charAt(0).toUpperCase() + s.slice(1).toLowerCase()
 
   return (
     <div className="db-container">
@@ -86,10 +96,11 @@ export default function AdminDashboard() {
         <div className="db-grid">
           {familiesList.map(fam => (
             <div key={fam} className="db-card">
-              <strong>{fam}</strong>
+              <strong>{formatFamille(fam)}</strong>
               <p>{familyCounts[fam] || 0}</p>
             </div>
           ))}
+          {/* on ajoute le "Autres" s’il existe */}
           {familyCounts.Autres != null && (
             <div className="db-card">
               <strong>Autres</strong>
