@@ -1,53 +1,47 @@
-/* src/pages/UserHome.css */
-
+/* conteneur général */
 .user-home {
   background: #faf5eb;
   min-height: 100vh;
   padding: 1rem;
-  box-sizing: border-box;
 }
 
-/* ================= HEADER ================= */
+/* ===== header ===== */
 .uh-header {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: flex-start;    /* aligne tous les items en haut */
   max-width: 1024px;
-  margin: 0 auto 2rem;
-  gap: 1rem;
+  margin: 0 auto 1rem;
+  padding: 0 1rem;
 }
 
-/* Logo MadaPlants */
+/* logo à gauche */
+.uh-left {
+  flex-shrink: 0;
+}
 .uh-logo {
-  height: 192px;
-  object-fit: contain;
+  height: 80px;
 }
 
-/* Titre centré */
+/* titre centré (desktop only) */
 .uh-title {
   flex: 1;
   text-align: center;
-  font-size: 4.75rem;
+  font-size: 2rem;
   font-weight: 600;
   color: #3b2810;
-  margin: 0; /* pas de marge verticale pour rester compact */
 }
 
-/* Zone utilisateur (nom + déconnexion) */
+/* zone utilisateur à droite */
 .uh-user {
   display: flex;
-  flex-direction: column;     /* empile le nom et le bouton */
-  align-items: flex-end;      /* les pousse à droite */
+  flex-direction: column;
+  align-items: flex-end;
 }
-
-/* Nom de l’utilisateur */
 .uh-username {
   font-size: 1rem;
   color: #3b2810;
-  margin: 0;
 }
-
-/* Bouton Déconnexion */
 .uh-logout {
   margin-top: 0.5rem;
   padding: 0.25rem 0.5rem;
@@ -58,48 +52,45 @@
   cursor: pointer;
   font-size: 0.9rem;
 }
-
 .uh-logout:hover {
   background: #3b2810;
   color: #fff;
 }
 
-/* ================ GRILLE ================ */
-/* mobile-first : 2 colonnes */
+/* ===== grille de cartes ===== */
 .uh-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
   gap: 1rem;
   max-width: 1024px;
   margin: 0 auto;
 }
 
-/* desktop (>=768px) : 4 colonnes */
-@media (min-width: 768px) {
-  .uh-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
 /* ============ ADAPTATION MOBILE ============ */
 @media (max-width: 767px) {
-  /* Header empilé pour tenir sur la largeur */
+  /* empile le header */
   .uh-header {
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
   .uh-logo {
-    height: 100px;
+    height: 60px;
     margin-bottom: 0.5rem;
   }
+  /* cache le titre */
   .uh-title {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
+    display: none;
   }
+  /* user area en ligne */
   .uh-user {
     flex-direction: row;
     gap: 0.5rem;
     align-items: center;
+    margin-bottom: 1rem;
+  }
+  /* grille 2 colonnes */
+  .uh-grid {
+    grid-template-columns: repeat(2,1fr);
   }
 }

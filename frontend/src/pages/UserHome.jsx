@@ -7,9 +7,9 @@ import PlantCard                     from '@/components/PlantCard'
 import './UserHome.css'
 
 export default function UserHome() {
-  const { user, logout }                      = useAuth()
-  const [searchParams, setSearchParams]       = useSearchParams()
-  const search                                = searchParams.get('q') || ''
+  const { user, logout }                = useAuth()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const search                          = searchParams.get('q') || ''
 
   const [allPlants, setAllPlants] = useState([])
   const [plants,    setPlants]    = useState([])
@@ -63,8 +63,15 @@ export default function UserHome() {
   return (
     <div className="user-home">
       <header className="uh-header">
-        <img src="/logo.png" alt="MadaPlants" className="uh-logo" />
-        <div className="uh-title">MadaPlants</div>
+        <div className="uh-left">
+          <img src="/logo.png" alt="MadaPlants" className="uh-logo" />
+        </div>
+
+        <div className="uh-title">
+          <span style={{ color: '#97bf0d' }}>GREEN</span>
+          <span style={{ color: '#464547' }}>MADAG</span>
+        </div>
+
         <div className="uh-user">
           <span className="uh-username">{user.nom}</span>
           <button className="uh-logout" onClick={logout}>
@@ -73,12 +80,10 @@ export default function UserHome() {
         </div>
       </header>
 
-      {/* on passe la valeur lue dans l’URL et le callback */}
       <SearchBar value={search} onSearch={handleSearch} />
 
       <div className="uh-grid">
         {plants.map(p => (
-          /* on propage aussi `?q=…` vers la fiche détail */
           <Link to={`/plant/${p.id}?${searchParams.toString()}`} key={p.id}>
             <PlantCard plant={p} />
           </Link>

@@ -17,8 +17,7 @@ export default function Login() {
 
   return (
     <div className="login-page">
-      <img src={logo} alt="MadaPlants" className="login-logo" />
-      <h1>MadaPlants</h1>
+      <img src={logo} alt="GREENMADAG" className="login-logo" />
       <LoginForm onSuccess={onSuccess} />
     </div>
   )

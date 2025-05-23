@@ -10,7 +10,10 @@ export default function AdminHome() {
     <div className="admin-page">
       <header className="admin-header">
         <img src="/logo.png" alt="MadaPlants" className="admin-logo" />
-        <h1 className="admin-title">MadaPlants</h1>
+        <h1 className="admin-title">
+          <span style={{ color: '#97bf0d' }}>GREEN</span>
+          <span style={{ color: '#464547' }}>MADAG</span>
+        </h1>
         <div className="admin-user-area">
           <span className="admin-username">{user.nom}</span>
           <button className="admin-logout" onClick={logout}>
@@ -19,7 +22,6 @@ export default function AdminHome() {
         </div>
       </header>
 
-      {/* bouton “Mon profil” */}
       <div className="admin-profile">
         <Link
           to={`profil/${user.id}/modifier`}
@@ -30,7 +32,6 @@ export default function AdminHome() {
       </div>
 
       <main className="admin-content">
-        {/*** C’est ici que s’affichent les pages imbriquées ***/}
         <Outlet />
       </main>
     </div>

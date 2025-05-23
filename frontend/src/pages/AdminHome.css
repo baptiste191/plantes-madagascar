@@ -1,5 +1,3 @@
-/* src/pages/AdminHome.css */
-
 .admin-page {
   background: #faf5eb;
   min-height: 100vh;
@@ -20,7 +18,7 @@
 
 /* Logo */
 .admin-logo {
-  height: 196px;
+  height: 100px;
   object-fit: contain;
 }
 
@@ -142,7 +140,7 @@
     gap: 0.5rem;
   }
   .admin-logo {
-    height: 100px;
+    height: 80px;
     margin-bottom: 0.5rem;
   }
   .admin-title {
@@ -159,5 +157,11 @@
   .admin-grid {
     grid-template-columns: repeat(2, 1fr);
     margin: 1rem auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .admin-title {
+    display: none;
   }
 }

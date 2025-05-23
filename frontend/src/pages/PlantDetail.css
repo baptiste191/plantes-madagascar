@@ -3,6 +3,7 @@
   min-height: 100vh;
 }
 
+/* ===== HEADER ===== */
 .pd-header {
   display: flex;
   align-items: flex-start;
@@ -12,17 +13,18 @@
   padding: 1rem;
 }
 
+/* logo + (desktop) back */
 .pd-left {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
-
 .pd-logo {
-  height: 192px;
-  margin-bottom: 0;
+  height: 80px;
+  margin-bottom: 0.5rem;
 }
 
+/* le bouton “Retour” */
 .pd-back {
   background: transparent;
   border: none;
@@ -31,29 +33,32 @@
   cursor: pointer;
   padding: 0;
 }
-
 .pd-back:hover {
   text-decoration: underline;
 }
 
+/* seul affichage desktop pour ce bouton */
+.pd-back--desktop { display: inline-block }
+
+/* TITLE visible seulement desktop */
 .pd-title {
-  font-size: 4rem;
+  font-size: 2rem;
   font-weight: 600;
   color: #3b2810;
-  margin-top: 0.5rem;
+  display: block;
+  align-self: center;
 }
 
+/* user area */
 .pd-user {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
 }
-
-.pd-user span {
+.pd-username {
   font-size: 1rem;
   color: #3b2810;
 }
-
 .pd-logout {
   margin-top: 0.5rem;
   padding: 0.25rem 0.5rem;
@@ -64,55 +69,73 @@
   cursor: pointer;
   font-size: 0.9rem;
 }
-
 .pd-logout:hover {
   background: #3b2810;
   color: #fff;
 }
 
+/* bouton retour mobile – caché desktop */
+.pd-back--mobile {
+  display: none;
+  margin-top: 0.5rem;
+}
+
+/* ===== MAIN ===== */
 .pd-main {
   max-width: 800px;
   margin: 0 auto;
   padding: 1rem;
 }
-
-.pd-name1 {
-  font-size: 2rem;
-  margin: 0.5rem 0;
-  color: #3b2810;
-}
-
-.pd-name2 {
-  font-size: 1.5rem;
-  margin: 0;
-  color: #555;
-}
-
-.pd-family {
-  font-size: 1.2rem;
-  margin: 0.5rem 0 1rem;
-  color: #777;
-}
+.pd-name1 { font-size: 2rem; margin: .5rem 0; color: #3b2810; }
+.pd-name2 { font-size: 1.5rem; margin: 0; color: #555; }
+.pd-family { font-size: 1.2rem; margin: .5rem 0 1rem; color: #777; }
 
 .pd-photos {
   display: grid;
-  gap: 0.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: .5rem;
+  grid-template-columns: repeat(auto-fit, minmax(120px,1fr));
   margin-bottom: 1rem;
 }
-
 .pd-photo {
-  width: 100%;
-  height: 120px;
+  width: 100%; height: 120px;
   object-fit: cover;
   border-radius: 4px;
 }
 
 .pd-details > div {
   background: #fff;
-  padding: 0.75rem 1rem;
+  padding: .75rem 1rem;
+  margin-bottom: .75rem;
   border-radius: 4px;
-  margin-bottom: 0.75rem;
   border: 1px solid #e1dccf;
-  font-size: 0.95rem;
+  font-size: .95rem;
+}
+
+/* ============ ADAPTATION MOBILE ============ */
+@media (max-width: 767px) {
+  /* header empilé */
+  .pd-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .pd-logo {
+    height: 90px;
+    margin-bottom: .5rem;
+  }
+  /* masquer le titre */
+  .pd-title {
+    display: none;
+  }
+  /* cacher le back desktop, montrer le back mobile */
+  .pd-back--desktop { display: none }
+  .pd-back--mobile {
+    display: inline-block;
+    align-self: flex-start;
+  }
+  /* user area en ligne */
+  .pd-user {
+    flex-direction: column;
+    align-items: center;
+  }
 }

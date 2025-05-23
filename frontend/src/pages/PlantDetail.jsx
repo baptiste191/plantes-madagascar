@@ -32,7 +32,7 @@ export default function PlantDetail() {
     contre_indications,
     remarques,
     bibliographie,
-    endemique           // ← on suppose que votre back renvoie désormais ce booléen
+    endemique
   } = plant
 
   return (
@@ -40,15 +40,31 @@ export default function PlantDetail() {
       <header className="pd-header">
         <div className="pd-left">
           <img src="/logo.png" alt="MadaPlants" className="pd-logo" />
-          <button className="pd-back" onClick={() => nav(-1)}>
+          {/* desktop only */}
+          <button
+            className="pd-back pd-back--desktop"
+            onClick={() => nav(-1)}
+          >
             ← Retour
           </button>
         </div>
-        <div className="pd-title">MadaPlants</div>
+
+        <div className="pd-title">
+          <span style={{ color: '#97bf0d' }}>GREEN</span>
+          <span style={{ color: '#464547' }}>MADAG</span>
+        </div>
+
         <div className="pd-user">
-          <span>{user.nom}</span>
+          <span className="pd-username">{user.nom}</span>
           <button className="pd-logout" onClick={logout}>
             Déconnexion
+          </button>
+          {/* mobile only */}
+          <button
+            className="pd-back pd-back--mobile"
+            onClick={() => nav(-1)}
+          >
+            ← Retour
           </button>
         </div>
       </header>
@@ -64,7 +80,7 @@ export default function PlantDetail() {
                 <img
                   key={p.id}
                   src={`/photos/${p.filename}`}
-                  alt={`${nom_scientifique} #${i+1}`}
+                  alt={`${nom_scientifique} #${i + 1}`}
                   className="pd-photo"
                 />
               ))
@@ -74,21 +90,16 @@ export default function PlantDetail() {
 
         <section className="pd-details">
           <div><strong>Région :</strong> {regions}</div>
-          <div><strong>Maladie traitée ou Indication thérapeutique :</strong> {vertus}</div>
+          <div><strong>Maladie traitée/Indication :</strong> {vertus}</div>
           <div>
-            <strong>Plante endémique :</strong>{' '}
-            {endemique ? 'Oui' : 'Non'}
+            <strong>Plante endémique :</strong> {endemique ? 'Oui' : 'Non'}
           </div>
-          <div>
-            <strong>Posologie :</strong>{' '}
-            {usages}
-          </div>
+          <div><strong>Posologie :</strong> {usages}</div>
           <div><strong>Parties utilisées :</strong> {parties_utilisees}</div>
+          <div><strong>Mode de préparation :</strong> {mode_preparation}</div>
           <div>
-            <strong>Mode de préparation :</strong>{' '}
-            {mode_preparation}
+            <strong>Contre-indications :</strong> {contre_indications}
           </div>
-          <div><strong>Contre-indications :</strong> {contre_indications}</div>
           {remarques && <div><strong>Remarques :</strong> {remarques}</div>}
           {bibliographie && (
             <div><strong>Bibliographie :</strong> {bibliographie}</div>
