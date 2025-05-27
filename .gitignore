@@ -1,5 +1,4 @@
 *.db
-/photos/
 /node_modules/
 /.env
 .env 

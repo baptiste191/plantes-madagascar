@@ -19,8 +19,8 @@ async function seed() {
     const userHash  = await bcrypt.hash(utilisateurPwd, saltRounds);
 
     // recréer les comptes
-    await User.create({ nom: 'admin1',       mot_de_passe: adminHash1, role: 'admin' });
-    await User.create({ nom: 'admin2',       mot_de_passe: adminHash2, role: 'admin' });
+    await User.create({ nom: 'administrateur',       mot_de_passe: adminHash1, role: 'admin' });
+    await User.create({ nom: 'administratrice',       mot_de_passe: adminHash2, role: 'admin' });
     await User.create({ nom: 'utilisateur', mot_de_passe: userHash, role: 'user' });
     console.log('→ Utilisateurs créés');
 
